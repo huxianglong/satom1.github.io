@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Re," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="主要是对PE文件做一些大概的介绍。">
+<meta name="keywords" content="Re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PE">
+<meta property="og:url" content="http://satomhxl.github.io/2017/08/21/PE/index.html">
+<meta property="og:site_name" content="xL&#39;s Blog">
+<meta property="og:description" content="主要是对PE文件做一些大概的介绍。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://satomhxl.github.io/images/pe.png">
+<meta property="og:updated_time" content="2017-11-01T06:17:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PE">
+<meta name="twitter:description" content="主要是对PE文件做一些大概的介绍。">
+<meta name="twitter:image" content="http://satomhxl.github.io/images/pe.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://satomhxl.github.io/2017/08/21/PE/"/>
+
+
+
+
+
+  <title>PE | xL's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xL's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/08/21/PE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xL's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PE</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-21T20:30:46+08:00">
+                2017-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要是对PE文件做一些大概的介绍。</p>
+<a id="more"></a>
+<p>PE (Portable Excutable可移植执行体) 格式是win32所有可执行文件都使用的格式。</p>
+<blockquote>
+<p>“可移植” 指的是 即使 Windows 运行在非 Intel 的 CPU 上，任何 win32 平台的 PE 装载器都能识别和使用该文件格式</p>
+</blockquote>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="PE-文件结构简介"><a href="#PE-文件结构简介" class="headerlink" title="PE 文件结构简介"></a>PE 文件结构简介</h3><p>PE 文件使用平面的地址空间，所有代码和数据都合并在一起，组成一个很大的结构。</p>
+<h4 id="区块-section"><a href="#区块-section" class="headerlink" title="区块(section)"></a>区块(section)</h4><p>文件被分成很多个 区块，其中包含代码或者数据。<br>每个区块都有自己在内存中的属性，如 只读，可读写。<br>一般我们遇到的以下 区块 的含义是：</p>
+<ul>
+<li>.text 在编译或汇编结束时产生的一种块，内容全是指令代码。</li>
+<li>.data 初始化的数据块</li>
+<li>.rdata 程序运行期间的只读数据</li>
+<li>.idata 外来 DLL 的函数以及数据信息，即 输入表</li>
+<li>.rsrc 资源。比如 图标、菜单 等</li>
+<li>.bss 未初始化数据</li>
+</ul>
+<blockquote>
+<p>区块按照 页 来对齐，区块没有大小限制，是一个连续的结构。</p>
+</blockquote>
+<h4 id="入口点-Entry-Point"><a href="#入口点-Entry-Point" class="headerlink" title="入口点(Entry Point)"></a>入口点(Entry Point)</h4><p>PE文件在执行时的第一行代码的地址就是 “入口点”。</p>
+<h4 id="文件偏移地址"><a href="#文件偏移地址" class="headerlink" title="文件偏移地址"></a>文件偏移地址</h4><p>PE文件存储在磁盘时，各数据的地址称为文件的 “偏移地址”。<br>文件的偏移地址从文件的第一个字节开始计数，起始值为 0。</p>
+<h4 id="虚拟地址-virtual-address-VA"><a href="#虚拟地址-virtual-address-VA" class="headerlink" title="虚拟地址(virtual address,VA)"></a>虚拟地址(virtual address,VA)</h4><p>由于 Windows 运行在保护模式下，所以应用程序访问的是 “逻辑地址”，也叫 “虚拟地址”，又称 “内存偏移地址”(Memory Offset)。</p>
+<blockquote>
+<p>我们经常能看到在不同的电脑中运行相同的程序其同一条指令的地址是相同的，这个地址其实是 虚拟地址。</p>
+</blockquote>
+<h4 id="基地址-Image-Base"><a href="#基地址-Image-Base" class="headerlink" title="基地址(Image Base)"></a>基地址(Image Base)</h4><p>文件执行时被映射到 指定内存地址中，这个初始内存地址称为 “基地址”，在 PE文件 的 <code>IMAGE_OPTIONAL_HEADER32</code> 结构中设定。</p>
+<blockquote>
+<p>用 Visual C++ 生成的 EXE 文件基地址是 0040 0000H , DLL基地址 是1000 0000H 。这个值可以自己在编译器中设定。</p>
+</blockquote>
+<h4 id="相对虚拟地址-RVA"><a href="#相对虚拟地址-RVA" class="headerlink" title="相对虚拟地址 (RVA)"></a>相对虚拟地址 (RVA)</h4><p>RVA是 Relation Virtual Address 的缩写。<br>它是一个相对地址。PE文件中的各种数据结构中涉及地址的字段大部分都是以RVA表示的。<br>它的值为 PE 文件被<strong>装载到内存中以后</strong>，某个数据位置相对<strong>文件头</strong>的偏移。<br>某数据的RVA计算法方法 ： 该数据的地址 - 文件的开头地址</p>
+<h4 id="数据结构的定义"><a href="#数据结构的定义" class="headerlink" title="数据结构的定义"></a>数据结构的定义</h4><p>PE文件的结构定义在 winnt.h 头文件中。 在计算机中搜索一般都能搜到。<br>用编辑器打开，然后搜索结构名，就能看到数据结构的定义。</p>
+<p>PE文件中的数据结构一般都有 32位 和 64位之分，一般会在名称中表现出来。比如 <code>IMAGE_NT_HEADER32</code> 和 <code>IMAGE_NT_HEADER64</code></p>
+<blockquote>
+<p>64位版本知识对32位进行了一些扩展，结构几乎一模一样。</p>
+</blockquote>
+<h3 id="PE文件到内存的映射"><a href="#PE文件到内存的映射" class="headerlink" title="PE文件到内存的映射"></a>PE文件到内存的映射</h3><p>系统运行一个可执行文件并不是直接将其整个加载到内存中(物理内存也吃不消)。</p>
+<p>Windows装载器在装载的时候仅仅建立好虚拟地址和PE文件之间的映射关系 (相当于放到虚拟内存中)。<br>当真正执行到某个内存页中的指令或访问某一页的数据时，这页才会被从磁盘加载到物理内存中。</p>
+<blockquote>
+<p>文件中较高的偏移地址被映射到较高的内存地址中。<br>“映射” 表明 PE文件的 <strong>内容的布局</strong> 在磁盘中和在内存中是 一样的 (除了一些冗余信息不会被加载到内存中)。</p>
+</blockquote>
+<p>Windows 装载器对于 DOS 头、PE头 以及 区块表 都是不进行任何处理的。<br>但是在装载 区块 的时候，会按照区块的属性进行一些处理，比如下面的内容：</p>
+<ul>
+<li>内存页的属性 (比如只读的部分不装载到内存中)</li>
+<li>区块的偏移地址 </li>
+<li>区块的尺寸</li>
+<li>不进行映射的区块</li>
+</ul>
+<h4 id="虚拟地址与物理地址的关系"><a href="#虚拟地址与物理地址的关系" class="headerlink" title="虚拟地址与物理地址的关系"></a>虚拟地址与物理地址的关系</h4><ul>
+<li>将虚拟地址转换成物理地址的信息存放在叫做<em>页目录</em>和<em>页表</em>的结构里。CPU根据其内容将虚拟地址转换成物理地址。</li>
+<li>每一个进程都有自己的一套页目录和页表。因此即使他们的虚拟内存都是0~4GB，但是映射的物理内存地址却不相同。</li>
+<li>用户的程序中使用的都是虚拟地址，永远无法直接访问物理地址。</li>
+</ul>
+<blockquote>
+<p>我们在windows中使用的debug是运行在 虚拟8086模式 下的，而windows操作系统运行在 保护模式 下。所以无论你在 debug 中如何修改内存，也不会影响到操作系统。</p>
+</blockquote>
+<h4 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h4><p>每一个进程都有自己的4GB虚拟内存空间。现在有一个DLL文件装载在内存中，如果有别的EXE文件要调用它的函数，如何知道函数在哪个地址？<br>其实是无法知道的。所以EXE文件就要先将DLL拷贝到自己的内存空间中，并赋予它一个新的地址，并记下来。这就是这个从旧地址更换到新地址的过程就叫重定位。</p>
+<h4 id="对齐"><a href="#对齐" class="headerlink" title="对齐"></a>对齐</h4><p>对齐的单位大小 在 <code>IMAGE_OPTIONAL_HEADER32</code> 结构中定义。</p>
+<ul>
+<li>在硬盘中，PE文件的对齐值称为 FileAlignment，一般以 0x200 字节(约500字节)为一“页”。</li>
+<li>在内存中，PE文件的对齐值称为 SectionAlignment，一般以 0x1000h 字节(约4000字节)为一“页”。</li>
+</ul>
+<p>这样对齐的好处是：CPU查数据的时候不用一行一行查数据，而可以一页一页翻数据。每一页中未填满的部分，用<code>0</code>填充</p>
+<hr>
+<p>我们用16进制编辑器打开PE文件时，表现的是其在 <strong>硬盘</strong> 中的数据分布情况，即是以 0x200h 字节对齐的。<br>而数据目录表中数据的地址，是以 0x1000 字节对齐时的地址。</p>
+<p>所以我们在16进制编辑器中按照数据目录表查找数据时，需要做一些换算(设0x1000字节对齐为①情况，0x200字节对齐为②情况)：</p>
+<ol>
+<li>得到①情况下每个区块的地址范围 (即每个区块的起始地址和数据长度)。</li>
+<li>看目标数据在哪个区块中。 以 目标数据的RVA - 该区块起始地址 = RVA2</li>
+<li>得到该区块的在②情况下的起始地址，该地址 + RVA2，得到文件在编辑器中打开时目标数据的位置</li>
+</ol>
+<p>如果觉得麻烦，可以用 LordPE软件，将某个正在运行的进程 dumpfull(即将其在内存中的情况直接映射)下来，用编辑器来分析这个文件即可。</p>
+<hr>
+<p><img src="/images/pe.png" alt=""></p>
+<h2 id="MS-DOS头"><a href="#MS-DOS头" class="headerlink" title="MS-DOS头"></a>MS-DOS头</h2><p>PE文件的第一个字节起始于一个传统的 MS-DOS 头部，被称作 <code>IMAGE_DOS_HEADER</code><br>以16进制打开一个PE文件，开始的两个字节是 4D 5A ，表示 MZ。 这是DOS可执行文件的标记<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_DOS_HEADER</span>&#123;</span></span><br><span class="line">    +<span class="number">0</span>h  WORD e_magic     <span class="comment">//magic DOS signature ，值为4D 5A</span></span><br><span class="line">    . . .</span><br><span class="line">    +<span class="number">3</span>ch DWORD e_lfanew  <span class="comment">//PE文件头的偏移量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这主要是用来兼容以前的DOS程序的，不用太过在意。<br>中间的数据你可以任意改变它。</p>
+<h2 id="PE头标志"><a href="#PE头标志" class="headerlink" title="PE头标志"></a>PE头标志</h2><p>003c~003f 这4个字节指示PE头的 地址。(注意用逆序法看)<br>这4个字节指向的地址 处的内容应该是 50 45 00 00，对应ASCII为 <code>P E . .</code> ，这是PE头的标志</p>
+<blockquote>
+<p>程序加载的时候， PE装载器先从 <code>IMAGE_DOS_HEADER</code> 的 e_lfanew 字段得到 PE header 的起始偏移量，再加上基地址就得到了 PE文件头的指针<br>P~NTHeader~ = ImageBase + dosHeader.e_lfanew</p>
+</blockquote>
+<p>从这里开始就是 <code>IMAGE_NT_HEADER</code> ，该数据结构中包含许多 PE 装载器要用到的重要内容。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_NT_HEADERS</span>&#123;</span></span><br><span class="line">    +<span class="number">0</span>h  DWORD                     signature</span><br><span class="line">    +<span class="number">4</span>h  IMAGE_FILE_HEADER         FileHeader</span><br><span class="line">    +<span class="number">18</span>h IMAGE_OPTIONAL_HEADER32   OptionalHeader</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>signature 的内容为 0000 4550 ，即 <code>PE..</code> 表示这是一个一个有效的 PE 文件。</li>
+</ul>
+<h3 id="IMAGE-FILE-HEADER"><a href="#IMAGE-FILE-HEADER" class="headerlink" title="IMAGE_FILE_HEADER"></a>IMAGE_FILE_HEADER</h3><p>IMAGE_FILE_HEADER又是一个结构。<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_FILE_HEADER</span>&#123;</span></span><br><span class="line">    +<span class="number">04</span>H WORD  Machine               <span class="comment">//运行平台，即 CPU</span></span><br><span class="line">    +<span class="number">06</span>H WORD  NumberOfSections      <span class="comment">//文件区块数目</span></span><br><span class="line">    +<span class="number">08</span>H DWORD TimeDateStamp         <span class="comment">//文件创建日期和时间</span></span><br><span class="line">    +<span class="number">0</span>cH DWORD PointerToSymbolTable  <span class="comment">//指向符号表(主要用于调试)</span></span><br><span class="line">    +<span class="number">10</span>H DWORD NumberOfSymbles       <span class="comment">//符号表中符号个数(同上)</span></span><br><span class="line">    +<span class="number">14</span>H WORD  SizeOfOptionalHeader  <span class="comment">//IMAGE_OPTIONAL_HEADER32结构大小</span></span><br><span class="line">    +<span class="number">16</span>H WORD  Characteristics       <span class="comment">//文件属性。exe一般为0100h，DLL一般为210eh</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="IMAGE-OPTIONAL-HEADER32"><a href="#IMAGE-OPTIONAL-HEADER32" class="headerlink" title="IMAGE_OPTIONAL_HEADER32"></a>IMAGE_OPTIONAL_HEADER32</h3><p><code>IMAGE_FILE_HEADER</code> 一个结构远远不足以描述 PE 文件的属性，所以加入了这个结构来进一步定义。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_OPTIONAL_HEADER32</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    +<span class="number">28</span>h DWORD AdressOfEntryPoint     <span class="comment">//程序执行入口RVA</span></span><br><span class="line">    ...</span><br><span class="line">    +<span class="number">34</span>h DWORD ImageBase              <span class="comment">//程序首选装载地址</span></span><br><span class="line">    +<span class="number">38</span>h DWORD SectionAlignment       <span class="comment">//内存中的区块对齐大小</span></span><br><span class="line">    +<span class="number">3</span>Ch DWORD FileAlignment          <span class="comment">//文件中的区块对齐大小 </span></span><br><span class="line">    ...</span><br><span class="line">    +<span class="number">78</span>h IMAGE_DATA_DIRECTORY DataDirectory <span class="comment">//数据目录表</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="数据目录表"><a href="#数据目录表" class="headerlink" title="数据目录表"></a>数据目录表</h4><p>若要在 PE 文件中寻找某个数据，就先查找 数据目录表。里面包含很多数据的指针。</p>
+<p>RVA = 78h 处是 “数据目录表”。<br>里面共有16个元素。每个元素存放两个内容：<br><code>1. 数据的起始RVA</code> ： <code>2.数据块的长度</code></p>
+<ul>
+<li>[0]：存放导出表。（DLL文件中常有）</li>
+<li>[1]：存放导入表。(EXE文件中常有)</li>
+<li>[2]：资源。即图标、图片等。</li>
+<li>…</li>
+<li>[5] : 重定位表</li>
+<li>…</li>
+</ul>
+<p>其他的元素不是很重要。</p>
+<blockquote>
+<p>我们在PE文件中寻找数据时就要首先到这里来寻找。<br>比如我们要看这个PE文件导入了哪些DLL文件中的哪些API函数，就必须从 [1] 中得到导入表的位置和大小。</p>
+</blockquote>
+<h2 id="区块表-section-table"><a href="#区块表-section-table" class="headerlink" title="区块表(section table)"></a>区块表(section table)</h2><p>PE 文件中所有区块的属性都被定义在 区块表中。</p>
+<p>区块表的位置可由 <code>IMAGE_OPTIONAL_HEADER32</code>结构 推出。知道了它的开始地址和结构大小，那么它的后面就是区块表。<br>区块表的数目 在 <code>IMAGE_FILE_HEADER</code> 中定义。</p>
+<p>每一个区块表的大小是 28H BYTES<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_SECTION_HEADER</span>&#123;</span></span><br><span class="line">    BYTE NAME <span class="comment">//区块名</span></span><br><span class="line">    DWORD VirtualSize <span class="comment">//真实长度</span></span><br><span class="line">    DWORD VirtualAddress <span class="comment">//区块的RVA地址</span></span><br><span class="line">    DWORD SizeOfRawData <span class="comment">//磁盘中对齐后的尺寸</span></span><br><span class="line">    DWORD PointerToRawData <span class="comment">//文件中的偏移量</span></span><br><span class="line">    ...</span><br><span class="line">    DWORD Characteristics <span class="comment">//区块属性</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Name(区块名)：一般有 .text .data 等区块。<blockquote>
+<p>注意这些名称只是命名习惯，方便程序员查看，并无实际意义，相反还常用来迷惑别人。装载器不会认为 .data 中的是数据，而是以 数据目录表 为准</p>
+</blockquote>
+</li>
+<li>Virtual Size<br>区块的数据在没有进行对齐处理前的实际大小。</li>
+<li>Virtual Address<br>该区块按照 SectionAlignment 对齐后的RVA地址。它一般为 SectionAlignment(1000h) 的整数倍。</li>
+<li>SizeOfRawData<br>该区块在磁盘中所占的地址。对于可执行文件，该字段指按照硬盘中的规则对齐后的地址</li>
+<li>PointerToRawData<br>该区块在硬盘中相对文件开头的偏移</li>
+</ul>
+<h3 id="Characteristics"><a href="#Characteristics" class="headerlink" title="Characteristics"></a>Characteristics</h3><p>有什么属性，其值就为那些属性对应码的 xor<br>比如 含代码、可执行、可读，那么该区块的 characteristic 值为 <code>6000 0020</code></p>
+<p>常用的属性码有：</p>
+<ul>
+<li>20h(含代码)</li>
+<li>40h(含初始化数据)</li>
+<li>80h(含未初始化数据)</li>
+<li>0200 0000h(可丢弃，如重定位区块)</li>
+<li>1000 0000h(共享区块)</li>
+<li>2000 0000h(可执行)</li>
+<li>4000 0000h(可读)</li>
+<li>8000 0000h(可写) </li>
+</ul>
+<p>若想更详细地了解，可以参考[<a href="https://msdn.microsoft.com/en-us/library/ms680341(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/en-us/library/ms680341(v=vs.85).aspx</a>]</p>
+<blockquote>
+<p>区块在内存中的范围是<br>(Virtual Address) ~ (Virtual Address + SizeOfRawData)</p>
+</blockquote>
+<h2 id="区块-section-1"><a href="#区块-section-1" class="headerlink" title="区块(section)"></a>区块(section)</h2><p>区块是PE文件真正保存内容的部分。</p>
+<p>一个区块中的数据被放在一起仅仅因为它们属性相同，而不是用处相同。 比如输入/输出表可能和只读常量放在一起，因为他们的属性都是可读不可写。</p>
+<h2 id="输入表"><a href="#输入表" class="headerlink" title="输入表"></a>输入表</h2><p>输入表记载着一个可执行文件需要引用到哪些dll中的哪几个函数。</p>
+<h2 id="输出表-Export-Table"><a href="#输出表-Export-Table" class="headerlink" title="输出表(Export Table)"></a>输出表(Export Table)</h2><p>输出表记载着文件本身有哪些可以被引用的函数，以及函数的地址。</p>
+<blockquote>
+<p>当dll中的某个函数被加载到一个应用程序里时，这个函数的地址如何分配？这是由输入表和输出表联合决定的。</p>
+</blockquote>
+<p>结构名称 IMAGE_EXPORT_DIRECTORY<br>其中有用的几个变量：</p>
+<ul>
+<li>Name:模块的真实名称</li>
+<li>Base：基数。加上序数就是函数地址数组的索引值。</li>
+<li>NumberOfFunctions：导出函数的总数</li>
+<li>NumberOfNames：以名称方式导出的函数的总数</li>
+<li>AddressOfFunctions：保存输出函数地址的RVA</li>
+<li>AddressOfName：保存输出函数名字的RVA</li>
+<li>AddressOfNameOrdinals：保存输出函数序号的RVA</li>
+</ul>
+<h2 id="找到程序的入口地址"><a href="#找到程序的入口地址" class="headerlink" title="找到程序的入口地址"></a>找到程序的入口地址</h2><p>若要找第一个函数的入口点，先看 AddressOfNameOrdinals，得到函数序号，此序号+Base，就得到索引值。再根据AddressOfFunctions，找到保存函数地址的地方。按照此索引值到此处索引，比如索引值是1,那么这个地方的开始4byte就是该函数的RVA。<br>用VC编译的程序，其动态链接库的起始地址一般是 1000 0000<br>函数的入口点，就是 该函数的RVA + 起始地址</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Re/" rel="tag"># Re</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/10/learnPy/" rel="prev" title="Python基本语法">
+                Python基本语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xL</p>
+              <p class="site-description motion-element" itemprop="description">4396孤独凯瑞。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PE-文件结构简介"><span class="nav-number">1.1.</span> <span class="nav-text">PE 文件结构简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#区块-section"><span class="nav-number">1.1.1.</span> <span class="nav-text">区块(section)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#入口点-Entry-Point"><span class="nav-number">1.1.2.</span> <span class="nav-text">入口点(Entry Point)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件偏移地址"><span class="nav-number">1.1.3.</span> <span class="nav-text">文件偏移地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟地址-virtual-address-VA"><span class="nav-number">1.1.4.</span> <span class="nav-text">虚拟地址(virtual address,VA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基地址-Image-Base"><span class="nav-number">1.1.5.</span> <span class="nav-text">基地址(Image Base)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相对虚拟地址-RVA"><span class="nav-number">1.1.6.</span> <span class="nav-text">相对虚拟地址 (RVA)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构的定义"><span class="nav-number">1.1.7.</span> <span class="nav-text">数据结构的定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PE文件到内存的映射"><span class="nav-number">1.2.</span> <span class="nav-text">PE文件到内存的映射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟地址与物理地址的关系"><span class="nav-number">1.2.1.</span> <span class="nav-text">虚拟地址与物理地址的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重定位"><span class="nav-number">1.2.2.</span> <span class="nav-text">重定位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对齐"><span class="nav-number">1.2.3.</span> <span class="nav-text">对齐</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MS-DOS头"><span class="nav-number">2.</span> <span class="nav-text">MS-DOS头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PE头标志"><span class="nav-number">3.</span> <span class="nav-text">PE头标志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IMAGE-FILE-HEADER"><span class="nav-number">3.1.</span> <span class="nav-text">IMAGE_FILE_HEADER</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IMAGE-OPTIONAL-HEADER32"><span class="nav-number">3.2.</span> <span class="nav-text">IMAGE_OPTIONAL_HEADER32</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据目录表"><span class="nav-number">3.2.1.</span> <span class="nav-text">数据目录表</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块表-section-table"><span class="nav-number">4.</span> <span class="nav-text">区块表(section table)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Characteristics"><span class="nav-number">4.1.</span> <span class="nav-text">Characteristics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块-section-1"><span class="nav-number">5.</span> <span class="nav-text">区块(section)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入表"><span class="nav-number">6.</span> <span class="nav-text">输入表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出表-Export-Table"><span class="nav-number">7.</span> <span class="nav-text">输出表(Export Table)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#找到程序的入口地址"><span class="nav-number">8.</span> <span class="nav-text">找到程序的入口地址</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xL</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

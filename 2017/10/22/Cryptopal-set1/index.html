@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cryptography," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一个与密码学有关的题集，适合入门。我在结合了网上的解法后，写了这些东西，供以后参考。 题目链接  以下所有代码均使用 Python3  1. Convert hex to base64 题目大意：提供了一串hex encoded字符串 1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736要求将其转换为 base64">
+<meta name="keywords" content="cryptography">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cryptopal-set1">
+<meta property="og:url" content="http://satomhxl.github.io/2017/10/22/Cryptopal-set1/index.html">
+<meta property="og:site_name" content="xL&#39;s Blog">
+<meta property="og:description" content="一个与密码学有关的题集，适合入门。我在结合了网上的解法后，写了这些东西，供以后参考。 题目链接  以下所有代码均使用 Python3  1. Convert hex to base64 题目大意：提供了一串hex encoded字符串 1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736要求将其转换为 base64">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://satomhxl.github.io/images/ecb.png">
+<meta property="og:updated_time" content="2017-10-22T06:54:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cryptopal-set1">
+<meta name="twitter:description" content="一个与密码学有关的题集，适合入门。我在结合了网上的解法后，写了这些东西，供以后参考。 题目链接  以下所有代码均使用 Python3  1. Convert hex to base64 题目大意：提供了一串hex encoded字符串 1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736要求将其转换为 base64">
+<meta name="twitter:image" content="http://satomhxl.github.io/images/ecb.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://satomhxl.github.io/2017/10/22/Cryptopal-set1/"/>
+
+
+
+
+
+  <title>Cryptopal-set1 | xL's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xL's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/10/22/Cryptopal-set1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xL's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Cryptopal-set1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T22:46:10+08:00">
+                2017-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一个与密码学有关的题集，适合入门。<br>我在结合了网上的解法后，写了这些东西，供以后参考。</p>
+<p><a href="https://cryptopals.com/sets/1/challenges/1" target="_blank" rel="external">题目链接</a></p>
+<blockquote>
+<p>以下所有代码均使用 Python3</p>
+</blockquote>
+<h2 id="1-Convert-hex-to-base64"><a href="#1-Convert-hex-to-base64" class="headerlink" title="1. Convert hex to base64"></a>1. Convert hex to base64</h2><blockquote>
+<p>题目大意：<br>提供了一串hex encoded字符串<br> 1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736<br>要求将其转换为 base64 编码<br>并且题目中推荐用 字节型数据 进行操作。</p>
+</blockquote>
+<a id="more"></a>
+<p>关于base64编码，python3 中有原生库base64可用，但是base64.encode() 只能接收 字节串。</p>
+<ul>
+<li><p><code>binascii.unhexlify()</code> 将 16进制字符串 转换为 ASCII编码的字节串。</p>
+</li>
+<li><p><code>base64.b64encode()</code> 接收/输出 <strong>字节串</strong><br>所以结果需要用 decode(‘ascii’) 转换为 字符串(字符串转字节串可以用encode(‘ascii’) )。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">x = <span class="string">'1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'</span></span><br><span class="line">decode = binascii.unhexlify(x)</span><br><span class="line">b = base64.b64encode(decode).decode(<span class="string">'ascii'</span>)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+<h2 id="2-Fixed-XOR"><a href="#2-Fixed-XOR" class="headerlink" title="2. Fixed XOR"></a>2. Fixed XOR</h2><blockquote>
+<p>题目大意：<br>要求写一个函数，接受2个同长度的输入，并产生它们xor后的值。比如：<br>1c0111001f010100061a024b53535009181c<br>xor<br>686974207468652062756c6c277320657965<br>will produce<br>746865206b696420646f6e277420706c6179</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.strxor <span class="keyword">import</span> strxor</span><br><span class="line"></span><br><span class="line">encoded1 = <span class="string">'1c0111001f010100061a024b53535009181c'</span></span><br><span class="line">encoded2 = <span class="string">'686974207468652062756c6c277320657965'</span></span><br><span class="line"></span><br><span class="line">s = binascii.unhexlify(encoded1)</span><br><span class="line">t = binascii.unhexlify(encoded2)</span><br><span class="line"></span><br><span class="line">u = strxor(s, t)</span><br><span class="line">print(u)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Crypto.Util.strxor.strxor()</code> 函数接收 2 个等长字符串，将它们异或，返回 ASCII 形式的结果。</li>
+</ul>
+<p>下面是不用库函数的解法：</p>
+<ul>
+<li>python 中的 按位异或操作符<code>^</code> 只能操作 数字，而不能是 string。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">xor</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    result = hex(int(str1,<span class="number">16</span>)^int(str2,<span class="number">16</span>) )</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">    print(b[<span class="number">2</span>:])</span><br><span class="line"></span><br><span class="line">str1 = <span class="string">"1c0111001f010100061a024b53535009181c"</span></span><br><span class="line">str2 = <span class="string">"686974207468652062756c6c277320657965"</span></span><br><span class="line">res = xor(str1,str2)</span><br><span class="line">print(res)</span><br><span class="line">print(binascii.unhexlify(res))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-Single-byte-XOR-cipher"><a href="#3-Single-byte-XOR-cipher" class="headerlink" title="3. Single-byte XOR cipher"></a>3. Single-byte XOR cipher</h2><blockquote>
+<p>题目大意：<br>给一个 hex encoded string<br>1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736<br>它是被一个string被一个字符 xor 后得到的。<br>找到这个字符，并复原 string</p>
+</blockquote>
+<p>在这个题目中我们需要对字符 key 以ASCII编码的范围(即0～255) 进行一次穷举，然后将所有的256种情况中可能性最大的情况输出</p>
+<p>一般结果中空格最多的最有可能是明文，而本道题确实满足这点。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line">encoded = <span class="string">'1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'</span></span><br><span class="line">nums = binascii.unhexlify(encoded)</span><br><span class="line">strings = (<span class="string">''</span>.join(chr(num ^ key) <span class="keyword">for</span> num <span class="keyword">in</span> nums) <span class="keyword">for</span> key <span class="keyword">in</span> range(<span class="number">256</span>))</span><br><span class="line">print( max(strings, key=<span class="keyword">lambda</span> s: s.count(<span class="string">' '</span>)) )</span><br></pre></td></tr></table></figure>
+<p>或者按照题目中推荐的，建立字母频率表，更加严谨地解该题。这也有利于解后面的题目。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.strxor <span class="keyword">import</span> strxor_c</span><br><span class="line"></span><br><span class="line"><span class="comment"># From http://www.data-compression.com/english.html</span></span><br><span class="line">freqs = &#123;</span><br><span class="line">    <span class="string">'a'</span>: <span class="number">0.0651738</span>,<span class="string">'b'</span>: <span class="number">0.0124248</span>,<span class="string">'c'</span>: <span class="number">0.0217339</span> <span class="string">'d'</span>: <span class="number">0.0349835</span>,</span><br><span class="line">    <span class="string">'e'</span>: <span class="number">0.1041442</span>,<span class="string">'f'</span>: <span class="number">0.0197881</span>,<span class="string">'g'</span>: <span class="number">0.0158610</span>,<span class="string">'h'</span>: <span class="number">0.0492888</span>,</span><br><span class="line">    <span class="string">'i'</span>: <span class="number">0.0558094</span>,<span class="string">'j'</span>: <span class="number">0.0009033</span>,<span class="string">'k'</span>: <span class="number">0.0050529</span>,<span class="string">'l'</span>: <span class="number">0.0331490</span>,</span><br><span class="line">    <span class="string">'m'</span>: <span class="number">0.0202124</span>,<span class="string">'n'</span>: <span class="number">0.0564513</span>,<span class="string">'o'</span>: <span class="number">0.0596302</span>,<span class="string">'p'</span>: <span class="number">0.0137645</span>,</span><br><span class="line">    <span class="string">'q'</span>: <span class="number">0.0008606</span>,<span class="string">'r'</span>: <span class="number">0.0497563</span>,<span class="string">'s'</span>: <span class="number">0.0515760</span>,<span class="string">'t'</span>: <span class="number">0.0729357</span>,</span><br><span class="line">    <span class="string">'u'</span>: <span class="number">0.0225134</span>,<span class="string">'v'</span>: <span class="number">0.0082903</span>,<span class="string">'w'</span>: <span class="number">0.0171272</span>,<span class="string">'x'</span>: <span class="number">0.0013692</span>,</span><br><span class="line">    <span class="string">'y'</span>: <span class="number">0.0145984</span>,<span class="string">'z'</span>: <span class="number">0.0007836</span>,<span class="string">' '</span>: <span class="number">0.1918182</span> &#125;</span><br><span class="line">    <span class="comment">#可以看到空格的频率远高于任何字母</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">score</span><span class="params">(s)</span>:</span> <span class="comment">#返回每个字符串的总得分数</span></span><br><span class="line">    score = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">        c = chr(i).lower()</span><br><span class="line">        <span class="keyword">if</span> c <span class="keyword">in</span> freqs:</span><br><span class="line">            score += freqs[c]</span><br><span class="line">    <span class="keyword">return</span> score</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">breakSingleByteXOR</span><span class="params">(s)</span>:</span> <span class="comment">#返回key的ASCII码以及得分最高的字符串</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getkey</span><span class="params">(p)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> score(p[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> max( [ (i, strxor_c(s, i)) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">256</span>)] , key=getkey)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    encodedS = <span class="string">'1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736'</span></span><br><span class="line">    s = binascii.unhexlify(encodedS)</span><br><span class="line">    print(breakSingleByteXOR(s))</span><br></pre></td></tr></table></figure>
+<p><code>Crypto.Util.strxor.strxor_c()</code> 函数接收一个字符串，一个int数字(0~255)，用该int数字分别与 字符串中的各个字符xor，返回 ASCII 编码的结果</p>
+<h2 id="4-Detect-single-character-XOR"><a href="#4-Detect-single-character-XOR" class="headerlink" title="4. Detect single-character XOR"></a>4. Detect single-character XOR</h2><blockquote>
+<p>题目大意：<br>提供了<a href="https://cryptopals.com/static/challenge-data/4.txt" target="_blank" rel="external">一个文件</a>，里面是 n 个长度60的string，其中一个string是被一个 single-character xor 后得到的，找到它。</p>
+</blockquote>
+<p>题目推荐用题3中的得分函数来辅助完成，如果完成了题3,那么此题应该问题不大</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> challenge3</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decodeLines</span><span class="params">(filename)</span>:</span> <span class="comment">#构建一个生成器，每次返回文件的一行</span></span><br><span class="line">    f = open(filename, <span class="string">'r'</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        <span class="keyword">if</span> line[<span class="number">-1</span>] == <span class="string">'\n'</span>:</span><br><span class="line">            line = line[:<span class="number">-1</span>]</span><br><span class="line">        s = binascii.unhexlify(line)</span><br><span class="line">        <span class="keyword">yield</span> s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findSingleByteXOR</span><span class="params">(lines)</span>:</span> <span class="comment">#返回目标行的行数以及内容</span></span><br><span class="line">    brokenLines = [challenge3.breakSingleByteXOR(x)[<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> lines]</span><br><span class="line">    <span class="comment">#列表brokenlines是文件的每一行各自得分最高情况的集合</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">score</span><span class="params">(i)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> challenge3.score(brokenLines[i])</span><br><span class="line">    <span class="comment">#从每一行的得分最高情况中再选出得分最高的一行</span></span><br><span class="line">    maxI = max(range(len(brokenLines)), key=score)</span><br><span class="line">    <span class="keyword">return</span> (maxI+<span class="number">1</span>, brokenLines[maxI])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    print(findSingleByteXOR(decodeLines(<span class="string">'4.txt'</span>)))</span><br></pre></td></tr></table></figure>
+<h2 id="5-Implement-repreating-key-XOR"><a href="#5-Implement-repreating-key-XOR" class="headerlink" title="5. Implement repreating-key XOR"></a>5. Implement repreating-key XOR</h2><blockquote>
+<p>题目大意：<br>提供一串英文，要求用 key <code>ICE</code> 对这段英文进行异或。<br>Burning ‘em, if you ain’t quick and nimble<br>I go crazy when I hear a cymbal</p>
+</blockquote>
+<p>如果知道 字节串 的一个性质，那么这个题就十分简单。<br>我们都知道 字符串 在python中可视为一个 数组，单字符为其元素。<br>s1 = ‘str’ ，则 s1[1] -&gt; ‘t’<br>而 ==字节串 也可以视为一个数组，元素是 其字符的ASCII码，即int==<br>s2 = b’str’ ，则 s2[1] -&gt; 116<br>既然元素是 int，那么就可以直接用 按位异或符<code>^</code>进行异或了。</p>
+<p><code>bytes()</code> 将 int 数组按照 ASCII 转换为字节串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">RepeatingKeyXor</span><span class="params">(s, key)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> bytes([s[i] ^ key[i % len(key)] <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s))])</span><br><span class="line">    <span class="comment">#接受一个int数组，bytes()会按照ASCII返回对应的字节串</span></span><br><span class="line"></span><br><span class="line">x = <span class="string">b'''Burning 'em, if you ain't quick and nimble</span></span><br><span class="line"><span class="string">I go crazy when I hear a cymbal'''</span></span><br><span class="line">key = <span class="string">b'ICE'</span></span><br><span class="line"></span><br><span class="line">y = RepeatingKeyXor(x, key)</span><br><span class="line">encodedY = binascii.hexlify(y).decode(<span class="string">'ascii'</span>)</span><br><span class="line">print(encodedY)</span><br></pre></td></tr></table></figure>
+<h2 id="6-Break-repeating-key-XOR"><a href="#6-Break-repeating-key-XOR" class="headerlink" title="6.Break repeating-key XOR"></a>6.Break repeating-key XOR</h2><blockquote>
+<p>题目大意：<br>提供<a href="https://cryptopals.com/static/challenge-data/6.txt" target="_blank" rel="external">一个文件</a>，其内容是明文经过 repeating-key xor 后 base64 编码得到的。要求将其解密。</p>
+</blockquote>
+<p>这个题目可以说是 Set1 解题过程中的一道坎。不过还好题目给出了解题思路。</p>
+<hr>
+<p>先说一个读取文件的小细节。文件内容是有许多换行符的，那么这些换行符是否会对 base64 解密产生影响呢？</p>
+<blockquote>
+<p>base64的编码内容中只有<code>A-Z a-z 0-9 / +</code> 64个字符，以及凑数的<code>=</code>，没有 <code>\n</code> ，所以并不需要担心文件内容中的换行符会对解码结果产生影响。</p>
+</blockquote>
+<hr>
+<p>解题第一步，我们需要写一个函数求出 2 string 间的 hamming 距离。</p>
+<ul>
+<li>求 2个string 的 hamming 距离可以通过 将 2 个 string  xor，然后数出结果中有几个 bit 为 1 。</li>
+</ul>
+<p>然后需要解决的就是得到 KEYSIZE ，题目提示中给出的方式是：</p>
+<ol>
+<li>对于每一个 KEYSIZE，将密文按照 KEYSIZE 长度分成若干组，每个组有 KEYSIZE 个字符。</li>
+<li>从其中取出几组(比如 4组)，组与组之间计算 hamming distance/KEYSIZE 的值。</li>
+<li>然后计算 这些值的总和/这些值的数量，得到一个平均值。<br>最终得到的这个值最小，对应的那个 KEYSIZE 应该就是 目标KEYSIZE</li>
+</ol>
+<p>知道了 KEYSIZE 后，执行最后的解密阶段：</p>
+<ol>
+<li>将密文按照 KEYSIZE 分组</li>
+<li>取每个组的第1个字符，得到一个集合，再取每个组的第2个字符得到另一个集合… …(相当于求转置矩阵)</li>
+<li>将每一个集合看作是一个 single-byte XOR 的题目，解出 key</li>
+<li>用这个 key 对 base64 解码的密文 xor ，得到明文</li>
+</ol>
+<p><code>itertools.zip_longest()</code>可以方便地求转置矩阵。它取出所有参数的第1个元素组成一个元组，再取出所有第2个元素组成一个元组… …</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> single_byte_XOR <span class="keyword">as</span> challenge3</span><br><span class="line"><span class="keyword">import</span> repeating_key_XOR <span class="keyword">as</span> challenge5</span><br><span class="line"></span><br><span class="line"><span class="comment">#calculate the hamming distance between str1 and str2</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hamming</span><span class="params">(str1,str2)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> sum([ bin(str1[i]^str2[i]).count(<span class="string">'1'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(str1)) ])</span><br><span class="line">    <span class="comment">#由于字节串的每个元素都是数字，所以可以直接逐个xor ，然后转bin字符串，数出 1 的个数。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#求出可能的KEYSIZE</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalizedEditDistance</span><span class="params">(x, k)</span>:</span></span><br><span class="line">    blocks = [x[i:i+k] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(x), k)][<span class="number">0</span>:<span class="number">8</span>]</span><br><span class="line">    <span class="comment">#按 k 为长度分组</span></span><br><span class="line">    pairs = list(itertools.combinations(blocks, <span class="number">2</span>))</span><br><span class="line">    scores = [hamming(p[<span class="number">0</span>], p[<span class="number">1</span>])/float(k) <span class="keyword">for</span> p <span class="keyword">in</span> pairs]</span><br><span class="line">    <span class="keyword">return</span> sum(scores) / len(scores)</span><br><span class="line">    <span class="comment">#len(scores) is 6 because there are only 6 combinations of 4 blocks</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将密文按KEYSIZE分组，取出每组的第1、2、3...位，得到block1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getKey</span><span class="params">(x,k)</span>:</span>     </span><br><span class="line">    blocks = [ x[i:i+k] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(x),k) ]</span><br><span class="line">    key = <span class="string">b''</span></span><br><span class="line">    transposedBlocks = list(itertools.zip_longest(*blocks,fillvalue=<span class="number">0</span>))</span><br><span class="line">    key = [challenge3.breakSingleByteXOR(bytes(i))[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> transposedBlocks]</span><br><span class="line">    <span class="keyword">return</span> bytes(key)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span> :</span><br><span class="line">    data = base64.b64decode(open(<span class="string">'6.txt'</span>,<span class="string">'r'</span>).read())</span><br><span class="line">    keysize = min(range(<span class="number">2</span>, <span class="number">41</span>), key=<span class="keyword">lambda</span> k: normalizedEditDistance(data, k))</span><br><span class="line">    key = getKey(data,keysize)</span><br><span class="line">    plaintext = challenge5.encodeRepeatingKeyXor(data,key).decode(<span class="string">'ascii'</span>)</span><br><span class="line">    print(plaintext)</span><br></pre></td></tr></table></figure>
+<h2 id="7-AES-in-ECB-mode"><a href="#7-AES-in-ECB-mode" class="headerlink" title="7. AES in ECB mode"></a>7. AES in ECB mode</h2><blockquote>
+<p>题目大意：<br>Base64 编码的<a href="https://cryptopals.com/static/challenge-data/7.txt" target="_blank" rel="external">内容</a>通过AES-128 in ECB mode 加密，密钥为<code>YELLOW SUBMARIME</code>。将其解密。</p>
+</blockquote>
+<p>ECB 是 Block cipher mode of operation 中最简单的一种。<br><img src="/images/ecb.png" alt="ECB"></p>
+<p>直接调用 <code>Crypto.Cipher</code> 库解决。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line">data = base64.b64decode(open(<span class="string">'7.txt'</span>,<span class="string">'r'</span>).read())</span><br><span class="line"></span><br><span class="line">key = <span class="string">b'YELLOW SUBMARINE'</span></span><br><span class="line">cipher = AES.new(key,AES.MODE_ECB)</span><br><span class="line">result = cipher.decrypt(data)</span><br><span class="line">print(result.decode(<span class="string">'ascii'</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="8-Detect-AES-in-ECB-mode"><a href="#8-Detect-AES-in-ECB-mode" class="headerlink" title="8. Detect AES in ECB mode"></a>8. Detect AES in ECB mode</h2><blockquote>
+<p><a href="https://cryptopals.com/sets/1/challenges/8" target="_blank" rel="external">一个文件</a>中有许多段 hex-encoded 密文。其中有一段用 AES-ECB 模式加密。找出它。<br>注意 ECB 模式是无状态(stateless)且确定性(deterministic)的；同样的 16 字节长明文块 加密会得到 同样的 16 字节密文块。</p>
+</blockquote>
+<p>按照题目的提示，我们将每一段密文按照 16字节长度进行分组，计算两两分组之间是否相同。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> detect-single-byte-xor <span class="keyword">as</span> challenge4</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line">lines = challenge4.decodeLines(<span class="string">'8.txt'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">score</span><span class="params">(x)</span>:</span></span><br><span class="line">    lens = <span class="number">16</span></span><br><span class="line">    blocks = [x[i:i+k] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(x),lens)</span><br><span class="line">    pairs = itertools.combinations(blocks,<span class="number">2</span>)</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> pairs:</span><br><span class="line">        <span class="keyword">if</span> p[<span class="number">0</span>] = p[<span class="number">1</span>]:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> count</span><br><span class="line"></span><br><span class="line">linenumber = <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> lines:</span><br><span class="line">    <span class="keyword">if</span> score(l)&gt;<span class="number">0</span>:</span><br><span class="line">        print(linenumber)</span><br><span class="line">    linenumber += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cryptography/" rel="tag"># cryptography</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/18/Vim-base/" rel="next" title="Vim-base">
+                <i class="fa fa-chevron-left"></i> Vim-base
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xL</p>
+              <p class="site-description motion-element" itemprop="description">4396孤独凯瑞。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Convert-hex-to-base64"><span class="nav-number">1.</span> <span class="nav-text">1. Convert hex to base64</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Fixed-XOR"><span class="nav-number">2.</span> <span class="nav-text">2. Fixed XOR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Single-byte-XOR-cipher"><span class="nav-number">3.</span> <span class="nav-text">3. Single-byte XOR cipher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Detect-single-character-XOR"><span class="nav-number">4.</span> <span class="nav-text">4. Detect single-character XOR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Implement-repreating-key-XOR"><span class="nav-number">5.</span> <span class="nav-text">5. Implement repreating-key XOR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Break-repeating-key-XOR"><span class="nav-number">6.</span> <span class="nav-text">6.Break repeating-key XOR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-AES-in-ECB-mode"><span class="nav-number">7.</span> <span class="nav-text">7. AES in ECB mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Detect-AES-in-ECB-mode"><span class="nav-number">8.</span> <span class="nav-text">8. Detect AES in ECB mode</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xL</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

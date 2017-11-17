@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="code," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="记一下 C 语言的一些基本语法，以供参考。   编译型语言：源代码经过编译器的编译，生成可执行文件。如C语言 解释型语言(脚本语言)：将源代码转化为中间代码(比如，再发送给解释器，由解释器逐句翻译给cpu执行。跨平台特性好，但是每一次执行都要解释。如python,ruby,java">
+<meta name="keywords" content="code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c语言基础语法">
+<meta property="og:url" content="http://satomhxl.github.io/2017/09/19/c-base/index.html">
+<meta property="og:site_name" content="xL&#39;s Blog">
+<meta property="og:description" content="记一下 C 语言的一些基本语法，以供参考。   编译型语言：源代码经过编译器的编译，生成可执行文件。如C语言 解释型语言(脚本语言)：将源代码转化为中间代码(比如，再发送给解释器，由解释器逐句翻译给cpu执行。跨平台特性好，但是每一次执行都要解释。如python,ruby,java">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-31T19:20:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c语言基础语法">
+<meta name="twitter:description" content="记一下 C 语言的一些基本语法，以供参考。   编译型语言：源代码经过编译器的编译，生成可执行文件。如C语言 解释型语言(脚本语言)：将源代码转化为中间代码(比如，再发送给解释器，由解释器逐句翻译给cpu执行。跨平台特性好，但是每一次执行都要解释。如python,ruby,java">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://satomhxl.github.io/2017/09/19/c-base/"/>
+
+
+
+
+
+  <title>c语言基础语法 | xL's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">xL's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/09/19/c-base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xL's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">c语言基础语法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-19T17:33:56+08:00">
+                2017-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记一下 C 语言的一些基本语法，以供参考。</p>
+<blockquote>
+<ul>
+<li>编译型语言：<br>源代码经过编译器的编译，生成可执行文件。如C语言</li>
+<li>解释型语言(脚本语言)：<br>将源代码转化为中间代码(比如，再发送给解释器，由解释器逐句翻译给cpu执行。跨平台特性好，但是每一次执行都要解释。如python,ruby,java<a id="more"></a>
+</li>
+</ul>
+</blockquote>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><ul>
+<li>基本类型： 整数(int)，浮点类型(float,double)，字符类型(char)，布尔类型(_Bool)，枚举类型(enum)</li>
+<li>指针类型</li>
+<li>构造类型：数组类型，结构类型，联合类型</li>
+<li>空类型</li>
+</ul>
+<h4 id="sizeof"><a href="#sizeof" class="headerlink" title="sizeof()"></a>sizeof()</h4><p><code>sizeof</code> 运算符，查看参数占内存多少位<br><code>e.x.  sizeof(变量名)     sizeof(类型)    sizeof(对象)</code></p>
+<h4 id="signed-amp-amp-unsigned"><a href="#signed-amp-amp-unsigned" class="headerlink" title="signed &amp;&amp; unsigned"></a>signed &amp;&amp; unsigned</h4><p>int类型默认为signed<br>存放 <code>signed int</code> 类型的存储单元中，第1位为符号位，为0表示数据为正数，为1表示是负数<br><code>unsigned int a</code>    表示变量a只能为正数。 unsigned的所有位都是用来存放数据的。</p>
+<h4 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h4><p>计算机通过补码来存储负数。<br>正数的补码就是其二进制数。</p>
+<blockquote>
+<p>负数的补码：</p>
+<ol>
+<li>先取得其绝对值的二进制形式</li>
+<li>除了符号位为1，将其他位按位取反</li>
+<li>将取反后的值+1</li>
+</ol>
+</blockquote>
+<h4 id="数据类型取值范围"><a href="#数据类型取值范围" class="headerlink" title="数据类型取值范围"></a>数据类型取值范围</h4><p>(下面是signed的取值范围，unsigned的范围就是相同范围的正数)</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>1bytes</td>
+<td>-2^7^~2^7^-1</td>
+</tr>
+<tr>
+<td>short</td>
+<td>2bytes</td>
+<td>-2^15^~2^15^-1</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4bytes</td>
+<td>-2^31^~2^31^-1</td>
+</tr>
+<tr>
+<td>long</td>
+<td>4bytes(32位系统)</td>
+</tr>
+<tr>
+<td>long long</td>
+<td>8bytes</td>
+<td>-2^63^~2^63^-1</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4bytes</td>
+<td>10^-38^~10^38^</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8bytes</td>
+<td>10^-308^~10^308^</td>
+</tr>
+<tr>
+<td>long double</td>
+<td>12bytes</td>
+<td>同上</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Format-String-Parameters"><a href="#Format-String-Parameters" class="headerlink" title="Format String Parameters"></a>Format String Parameters</h4><ul>
+<li>%d  整数</li>
+<li>%u 打印无符号的整数</li>
+<li>%c  字符</li>
+<li>%x  16进制整数 (无”0x”)</li>
+<li>%f  浮点数。float和double 都可以用。<br>%.2f表示精确到小数点后2位。</li>
+<li>%p  内存地址</li>
+</ul>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>通常用宏定义<code>#define</code>来定义一个常量。</p>
+<p>如   <code>#define URL &quot;http://www.example.com&quot;</code></p>
+<p>也可用关键字  <code>const</code> 定义常量<br>如<code>const float pi = 3.14</code></p>
+<p><strong>字符串常量</strong><br>用<code>#define</code> 定义了字符串常量后，在编译时编译器会自动在其末尾加上’\0’作为结束符。</p>
+<h3 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h3><p>内存中用ASCII码存储字符。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>,<span class="string">'C'</span>)  #<span class="number">67</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%c"</span>,<span class="number">67</span>) #C</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：char 默认为unsigned还是signed是由系统或编译器自己决定的。<br> 如果你将char类型作为数字的容器，若为signed容易给结果带来错误</p>
+</blockquote>
+<p><code>char a[4] = &quot;haha&quot;;</code><br>打印a[4] ， 会发现出现乱码。因为这个字符串4个单位全部被填满，没有\0，所以会一直读取。<br>解决方法：</p>
+<ol>
+<li>这样定义的时候至少要留出一个单位。</li>
+<li>中括号内不填数字，让编译器或系统自动分配。</li>
+</ol>
+<p><strong>scanf的一个注意点</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">"%c"</span>,&amp;a)</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%c"</span>,&amp;b)</span><br></pre></td></tr></table></figure></p>
+<p>输入 y 回车 n 回车 之后，a , b的值分别为多少？<br>a为’y’，b为’\n’<br>解决方法：在两条语句中间加一个 getchar()</p>
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><p><code>+</code>    加法 : ‘a’+’b’ 表示97+98<br><code>/</code>     除法 : 对于整数操作数，采取舍弃小数，不会四舍五入<br><code>%</code>  求余 : 要求两个参数必须是整数，不能为浮点型<br><code>&amp;&amp;</code> 逻辑与 : 只要左边式子不成立(为0)，右边的式子它就不会再运行<br><code>||</code> 逻辑或 : 只要左边式子成立(为1)，右边的式子就不会运行</p>
+<blockquote>
+<p>当两个不同类型的数字相加时，编译器会将占空间较小的换成占空间较大的类型。然后再相加。<br>或者你可以用int()等函数进行强制类型转换</p>
+</blockquote>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>初始化的几种方法<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">10</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>&#125;</span><br><span class="line"><span class="keyword">int</span> b[<span class="number">10</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,...n&#125;      <span class="comment">//为前n个赋值,其余10-n个都为0</span></span><br><span class="line"><span class="keyword">int</span> c[<span class="number">10</span>] = &#123;[<span class="number">3</span>]=<span class="number">3</span>,[<span class="number">5</span>]=<span class="number">5</span>,[<span class="number">8</span>]=<span class="number">8</span>&#125;     <span class="comment">//只给下标3,5,8赋值，其余都为0</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h3><p>二维数组其实就是一维数组的线性扩展<br><code>int array[4][5]</code><br>就是在内存中连续给出4个位置，每个位置占5个int类型数据。</p>
+<p>多维数组也如此</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>定义<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func_name</span><span class="params">()</span></span>&#123;        <span class="keyword">void</span>:函数返回类型。不返回数据就写<span class="keyword">void</span>       ()内填参数和类型。</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>指针变量存放地址<br><strong>声明：</strong><br><code>char *pa;</code>      <code>int *pb;</code>       较普通变量的声明前多了一个星号</p>
+<blockquote>
+<p>指针变量的类型：表示指针指向的数据类型。因为不同类型数据所占内存空间不同，通过指针取得数据的时候需要根据类型判断取几个内存单元</p>
+</blockquote>
+<ul>
+<li><code>&amp;</code>   取地址运算符，获取一个变量的地址<br>如  <code>int *pa = &amp;a</code></li>
+<li><code>*</code>    取值运算符，获取一个指针变量指向的数据<br>如  <code>*pa+=1</code></li>
+</ul>
+<blockquote>
+<p>一个未被赋值的指针变量会由系统随机分配内容。若利用这个指针向内存写入数据，会造成安全漏洞。</p>
+</blockquote>
+<p><strong>通过指针修改变量的内容</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a ;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;a;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%d"</span>,p);          <span class="comment">//p中存放a的地址</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"a=%d"</span>,a);</span><br></pre></td></tr></table></figure></p>
+<p><strong>指针变量的加减</strong><br>若将一指针p指向一数组， p+1 则指向数组下一个元素++(注意不是简单地将地址加1)++<br>p是什么类型的指针，p+1保存的地址就加对应类型的大小</p>
+<h3 id="数组和指针的关系"><a href="#数组和指针的关系" class="headerlink" title="数组和指针的关系"></a>数组和指针的关系</h3><p>数组名存放数组下标0的地址。<br>定义一个指针   <code>char *s = &quot;haha&quot;;</code>    我们可以用  <code>*s[0]</code> , <code>*s[1]</code>  来访问里面的字符。<br>但是，并不能将数组和指针混为一谈。<br>数组名保存的内容是不可修改的。而指针，你可以修改它的内容，让它指向不同位置。</p>
+<h3 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p[<span class="number">5</span>] = &#123;&amp;a,&amp;b,&amp;c,&amp;d,&amp;e&#125;;   <span class="comment">// []优先级大于 *</span></span><br><span class="line">                              <span class="comment">//存放指针的数组。</span></span><br><span class="line">*p[<span class="number">1</span>]  <span class="comment">//取变量b的内容</span></span><br></pre></td></tr></table></figure>
+<h3 id="二维数组-1"><a href="#二维数组-1" class="headerlink" title="二维数组"></a>二维数组</h3><p>如 <code>int array[4][5]</code></p>
+<p>针对上面这个例子，我们定义两个名词：</p>
+<ul>
+<li>小数组，里面存放5个单位的int数据</li>
+<li>大数组，里面存放4个小数组</li>
+</ul>
+<p>array可以看作是指向 大数组中第一个元素 的指针。即指向int类型数组的指针<br>一个int数据4个字节。 array+1  跨越了20个字节</p>
+<p><code>*array</code> 表示 array[0] 这个数组。     <code>*(array+1)</code>  表示array[1] 这个数组<br><code>*(*array)</code>  取array[0][0]       <code>*(*array+1)</code>  取array[0][1]</p>
+<p>array，其实就是一个<strong>数组指针</strong></p>
+<h3 id="数组指针"><a href="#数组指针" class="headerlink" title="数组指针"></a>数组指针</h3><p><code>int (*p)[5]</code>     p是指向 有5个int单元的数组 的指针</p>
+<blockquote>
+<p>int定义的是数组中元素的类型，p指针的类型是 int[5]</p>
+</blockquote>
+<p><strong>初始化</strong><br>以前我们将一个指针指向数组是这么做的：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">5</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *p = a;</span><br></pre></td></tr></table></figure></p>
+<p>指针指向 数组第一个元素，即指向一个int数据<br>但 数组指针 指向一整个数组，而不是一个int数据。<br>所以这样初始化：   <code>int *p = &amp;a;</code> (变量a为一个一维或多维数组)<br><code>*p</code> 表示第一个数组。  <code>*(*p)</code> 取第一个数组的第一个元素          <code>*(*(p+1))</code> 取第二个数组的第一个元素</p>
+<p>二维数组的数组名可以赋值给数组指针。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> array1[<span class="number">4</span>][<span class="number">5</span>] ;</span><br><span class="line"><span class="keyword">int</span> (*p)[<span class="number">5</span>] = array1 ;</span><br></pre></td></tr></table></figure></p>
+<h3 id="void指针"><a href="#void指针" class="headerlink" title="void指针"></a>void指针</h3><p>void指无类型，   我们不能用它来定义变量<br>然而，void可以定义指针，称为通用指针。它可以指向任何类型的数据。<br>我们不确定指针指向的数据类型的时候，就可以用它。<br>但是读取void指针指向的内容就有麻烦，因为系统不知道该取多长的内存单元(但是指向字符串的void指针没问题，只需要一直往下读，知道遇到’\0’停止就好)<br>不过，void指针过多会让阅读代码更难，所以我们一般在指向之后再对其强制类型转换。<br>如  <code>(int *) p</code></p>
+<h3 id="NULL指针"><a href="#NULL指针" class="headerlink" title="NULL指针"></a>NULL指针</h3><p>上面说过，定义一个指针却不让它指向一个地址，就会被系统随机分配一个地址，造成危险。<br>所以当你还不知道指针指向哪的时候，可以定义它为NULL指针。这样万一你引用了它，就会出现段错误。<br><code>int *p = NULL;</code></p>
+<h3 id="指向指针的指针"><a href="#指向指针的指针" class="headerlink" title="指向指针的指针"></a>指向指针的指针</h3><p>我们定义了一个字符串数组，由于字符串就是一个指向第一个字符的指针，所以我们用指针来访问它们，需要用指针的指针<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *sentence[ ] = &#123;<span class="string">"qwe"</span>,<span class="string">"asd"</span>,<span class="string">"zxc"</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> **select = &amp;sentence[<span class="number">1</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"I select %s from sentences.\n"</span>,*select);</span><br></pre></td></tr></table></figure></p>
+<h4 id="二维数组与指针的指针"><a href="#二维数组与指针的指针" class="headerlink" title="二维数组与指针的指针"></a>二维数组与指针的指针</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">array</span>[<span class="number">2</span>][<span class="number">3</span>]=&#123; &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125; , &#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125; &#125;;</span><br><span class="line"><span class="keyword">int</span> **p = <span class="built_in">array</span>;</span><br></pre></td></tr></table></figure>
+<p>这个指针p是否与上面的数组指针作用相同？<br>不一样。  C语言将array赋值给p的时候只知道array是一个指针。  而不知道array的结构。</p>
+<p><code>p</code> 与 <code>p+1</code> 的地址只相差 4byte。<br>同理，我们在定义 二维数组 的时候，行数可以不写，C语言会自己算。但是列数不能不写。这就是C语言不够智能的地方。<br>所以，要指向2维数组，只能用数组指针。</p>
+<h3 id="指向常量的指针"><a href="#指向常量的指针" class="headerlink" title="指向常量的指针"></a>指向常量的指针</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cnum =  <span class="number">10</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p = &amp;cnum;          <span class="comment">//不加上const会报错</span></span><br></pre></td></tr></table></figure>
+<p>指针p不是一个常量，可以修改指针p的指向(指向的数据不一定得是const int，也可以是int)。<br>const int 修饰指针指向的目的地，所以不可以通过这个指针，修改指向的值(无论指向变量还是常量)。</p>
+<h3 id="常量指针"><a href="#常量指针" class="headerlink" title="常量指针"></a>常量指针</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num =<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> * <span class="keyword">const</span> p = &amp;num</span><br></pre></td></tr></table></figure>
+<p>const 修饰p，不可以修改指针p的指向。<br>int修饰指针指向的值，所以可以通过这个指针 修改指向的目的地。而且这个指针 指向常量会报错</p>
+<h2 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h2><p>一般我们都知道函数的实参与形参的关系：函数内对形参的操作不会影响到实参。<br>函数内的变量称为局部变量。函数调用完成后，局部变量消失。</p>
+<p><strong>指针作为形参</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">( <span class="keyword">int</span> *x , <span class="keyword">int</span> *y )</span></span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>用指针作为形参，对形参的操作会影响实参</p>
+</blockquote>
+<p><strong>数组作为形参</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> a[<span class="number">10</span>])</span>   <span class="comment">//声明 (其中10可以省略)</span></span></span><br><span class="line"><span class="function"><span class="title">test</span><span class="params">(a)</span>             <span class="comment">//调用</span></span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>这里传递的不是整个数组，而是数组的第一个元素的地址。函数中对形参数组的操作同样会影响main中的实参数组。</p>
+</blockquote>
+<h3 id="指针函数"><a href="#指针函数" class="headerlink" title="指针函数"></a>指针函数</h3><p><strong>返回指针的函数</strong><br>比如我们要让函数返回一个字符串。而字符串我们一般用 char * 来声明。所以我们是否也能这样定义一个函数呢？<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">getString</span><span class="params">(<span class="keyword">char</span> input)</span></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span>(input)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">'A'</span>: <span class="keyword">return</span> <span class="string">"Apple"</span>;</span><br><span class="line">    <span class="keyword">default</span>:<span class="keyword">return</span> <span class="string">"None"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h3><p><strong>一个指向函数的指针</strong><br>声明的区别：</p>
+<ul>
+<li>指针函数   <code>int *p()</code></li>
+<li>函数指针 <code>int (*p)()</code></li>
+</ul>
+<p>e.x. 比如我们现在有一个函数，接收int，计算其平方<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">square</span><span class="params">(<span class="keyword">int</span> a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a*a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在我们在main()函数中用 函数指针 来指向它。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (*fp)(<span class="keyword">int</span>)</span><br><span class="line"><span class="comment">//前面的int表示指针返回int类型。括号里的int表示指向的函数以int作为参数</span></span><br><span class="line">fp = square;</span><br><span class="line"><span class="comment">//函数名相当于函数的地址。  这里在square前加上 &amp; 也可行</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span> , fp(<span class="number">5</span>));</span><br><span class="line"><span class="comment">//通过指针调用函数，计算5的平方。 一般为了代码更好阅读，fp(5)应该写成 (*fp)(5)</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="函数指针作为参数"><a href="#函数指针作为参数" class="headerlink" title="函数指针作为参数"></a>函数指针作为参数</h4><p>比如我们现在有两个函数：<code>add</code>和<code>sub</code><br>add 接收2个int，返回其和。sub接收2个int，返回其差。<br>现在我们定义一个函数<code>calc()</code>，接收3个参数。参数1为函数指针。参数2、3为两个int。它即可以调用<code>add</code>函数，又可以调用<code>sub</code>函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int calc(int (*fp)(int,int) , num1 , num2)(</span><br><span class="line">    <span class="keyword">return</span> (*fp)(num1 , num2);</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在main函数中调用这个函数</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span> , calc(add,<span class="number">5</span>,<span class="number">3</span>));     <span class="comment">//8</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span> , calc(sub,<span class="number">5</span>,<span class="number">3</span>));     <span class="comment">//2</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="函数指针作为返回值"><a href="#函数指针作为返回值" class="headerlink" title="函数指针作为返回值"></a>函数指针作为返回值</h4><p>比如我们写一个名为<code>select</code>的函数，接收1个符号，返回一个函数指针。如何写这个函数的声明？<br>比如接收一个<code>+</code>，就返回<code>add</code>函数，接收<code>-</code>，就返回 sub指针<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (*select(<span class="keyword">char</span> op))(<span class="keyword">int</span> , <span class="keyword">int</span>)&#123;</span><br><span class="line"> <span class="comment">// 考虑括号优先级。int (*fp)( int , int) 我们知道，fp是一个函数指针。</span></span><br><span class="line"> <span class="comment">//select(char op)取代fp，表示这是一个函数select()，它的返回值是函数指针。</span></span><br><span class="line">    <span class="keyword">switch</span>(op)&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"+"</span> : <span class="keyword">return</span> add;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">"-"</span> : <span class="keyword">return</span> sub;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//然后在main函数里</span></span><br><span class="line"><span class="keyword">int</span> (*fp)(<span class="keyword">int</span> , <span class="keyword">int</span>);</span><br><span class="line">fp = select(op);           <span class="comment">//定义函数指针用来接收返回的函数</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>,calc(fp,<span class="number">5</span>,<span class="number">3</span>));</span><br></pre></td></tr></table></figure></p>
+<p>这样，当op为<code>+</code>时，结果是8，当op是<code>-</code>时，结果是2</p>
+<h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><p>比如我们要表示一本书的信息，它包含书名、作者、售价、出版日期等，我们如何表示？<br>一个比较好的方式就是结构体。它能将 不同类型的数据 混合存放到1个变量中去。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Book</span>&#123;</span>    <span class="comment">//建议将结构体变量的首字母大写</span></span><br><span class="line">  <span class="keyword">char</span> title[<span class="number">40</span>];</span><br><span class="line">  <span class="keyword">char</span> author[<span class="number">40</span>];</span><br><span class="line">  <span class="keyword">float</span> price;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> date;</span><br><span class="line">&#125;;    <span class="comment">//此处分号不要忘记</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//声明变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Book</span> <span class="title">book1</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化变量</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Book</span> <span class="title">book2</span> = &#123;</span></span><br><span class="line"> <span class="string">"Head First C"</span>,</span><br><span class="line"> <span class="string">"David Griffiths"</span></span><br><span class="line"> <span class="string">"99.0"</span></span><br><span class="line"> <span class="number">20130901</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">book2.title;    <span class="comment">//访问成员</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Book</span> <span class="title">book3</span> = &#123;</span>.title = <span class="string">"Head First Java"</span>&#125;; <span class="comment">//根据成员名字初始化</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>结构体嵌套</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上面的程序中 Date 用 int 表示，有点不妥。</span></span><br><span class="line"><span class="comment">// 这里我们用结构体来表示。</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Date</span>&#123;</span></span><br><span class="line">  <span class="keyword">int</span> year;</span><br><span class="line">  <span class="keyword">int</span> month;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Book</span>&#123;</span></span><br><span class="line">  <span class="keyword">char</span> title[<span class="number">40</span>];</span><br><span class="line">  <span class="keyword">char</span> author[<span class="number">40</span>];</span><br><span class="line">  <span class="keyword">float</span> price;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Date</span> <span class="title">date</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体嵌套后，赋值时有几层嵌套就要用几个 "."</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="结构体-数组-指针"><a href="#结构体-数组-指针" class="headerlink" title="结构体 数组/指针"></a>结构体 数组/指针</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构体名称&#123;</span></span><br><span class="line">  结构体成员;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> 结构体名称 数组名[长度];</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Book</span> * <span class="title">ptr</span>;</span></span><br><span class="line"></span><br><span class="line">ptr = &amp;book;</span><br></pre></td></tr></table></figure>
+<p>访问结构体指针的 2 种方法：</p>
+<ol>
+<li><code>(*ptr).成员</code>   括号不可省略</li>
+<li><code>ptr-&gt;成员</code> (常用)</li>
+</ol>
+<p>如果我们要将 结构体 作为参数，传递给函数，不推荐直接传递，而应该用 <code>结构体指针</code>。<br>因为 结构体 有时候内容非常大，直接传递消耗资源较多。</p>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Test</span> <span class="title">test</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 上面的代码是错误的，这样写会陷入无限循环。</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Test</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Test</span> *<span class="title">test</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 上面的代码是成立的。 第3个成员指向另一个 struct Test 变量。这就是“链表”</span></span><br></pre></td></tr></table></figure>
+<p>链表中最简单的是 <code>单链表</code>。<br>其每个节点分为 信息域 和 指针域。<br>指针域一直指向下一个链节点，直到指向<code>NULL</code>为止。<br>它还需要一个<code>头节点</code>，来指向第一个链节点</p>
+<h2 id="内存分布"><a href="#内存分布" class="headerlink" title="内存分布"></a>内存分布</h2><p>text data bss(一般用来存放未初始化的全局变量)<br>可以用 <code>size</code> 命令查看一个可执行文件的 text , data , bss 段的大小。</p>
+<p>栈一般存放程序的 局部变量、参数、函数返回值。<br>栈的生存周期从 函数调用 开始，到 函数返回 结束。函数间的局部变量不能互相访问。</p>
+<p>堆由程序员动态控制。<br>堆的生存周期由动态申请开始，到程序员主动释放结束。不同函数之间均可自由访问。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/code/" rel="tag"># code</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/10/learnPy/" rel="next" title="Python基本语法">
+                <i class="fa fa-chevron-left"></i> Python基本语法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/21/gdb/" rel="prev" title="gdb_base">
+                gdb_base <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xL</p>
+              <p class="site-description motion-element" itemprop="description">4396孤独凯瑞。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">1.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sizeof"><span class="nav-number">1.0.1.</span> <span class="nav-text">sizeof()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#signed-amp-amp-unsigned"><span class="nav-number">1.0.2.</span> <span class="nav-text">signed && unsigned</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#补码"><span class="nav-number">1.0.3.</span> <span class="nav-text">补码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型取值范围"><span class="nav-number">1.0.4.</span> <span class="nav-text">数据类型取值范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Format-String-Parameters"><span class="nav-number">1.0.5.</span> <span class="nav-text">Format String Parameters</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量"><span class="nav-number">1.1.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符"><span class="nav-number">1.2.</span> <span class="nav-text">字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符"><span class="nav-number">1.3.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">1.4.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二维数组"><span class="nav-number">1.5.</span> <span class="nav-text">二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-number">1.6.</span> <span class="nav-text">函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针"><span class="nav-number">2.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数组和指针的关系"><span class="nav-number">2.1.</span> <span class="nav-text">数组和指针的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针数组"><span class="nav-number">2.2.</span> <span class="nav-text">指针数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二维数组-1"><span class="nav-number">2.3.</span> <span class="nav-text">二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组指针"><span class="nav-number">2.4.</span> <span class="nav-text">数组指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void指针"><span class="nav-number">2.5.</span> <span class="nav-text">void指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NULL指针"><span class="nav-number">2.6.</span> <span class="nav-text">NULL指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指向指针的指针"><span class="nav-number">2.7.</span> <span class="nav-text">指向指针的指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二维数组与指针的指针"><span class="nav-number">2.7.1.</span> <span class="nav-text">二维数组与指针的指针</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指向常量的指针"><span class="nav-number">2.8.</span> <span class="nav-text">指向常量的指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量指针"><span class="nav-number">2.9.</span> <span class="nav-text">常量指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数-1"><span class="nav-number">3.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指针函数"><span class="nav-number">3.1.</span> <span class="nav-text">指针函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数指针"><span class="nav-number">3.2.</span> <span class="nav-text">函数指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数指针作为参数"><span class="nav-number">3.2.1.</span> <span class="nav-text">函数指针作为参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数指针作为返回值"><span class="nav-number">3.2.2.</span> <span class="nav-text">函数指针作为返回值</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体"><span class="nav-number">4.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体-数组-指针"><span class="nav-number">4.1.</span> <span class="nav-text">结构体 数组/指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表"><span class="nav-number">4.2.</span> <span class="nav-text">链表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存分布"><span class="nav-number">5.</span> <span class="nav-text">内存分布</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xL</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
