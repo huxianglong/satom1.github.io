@@ -653,6 +653,249 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/11/06/md4-collision/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xL's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/06/md4-collision/" itemprop="url">MD4 Collisions</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-06T18:42:55+08:00">
+                2017-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://cryptopals.com/sets/7/challenges/55" target="_blank" rel="external">cryptopals challenge 55</a></p>
+<h2>MD4 介绍</h2>
+<p>1990年出现，基于 Merkle-Damgard 架构。它影响了后来的 MD5，SHA1等算法。</p>
+<p>hash值长度128bits.</p>
+<h3>过程</h3>
+<ol>
+<li>将 message pad 成 512 bit 的倍数</li>
+<li>按顺序将每一组 512 bit 通过 compression function 压缩成 128bit，最后一组得到的128bit就是hash值</li>
+</ol>
+<h4>压缩函数</h4>
+<p>compression function 共有3轮，每一轮用到一个不同的函数</p>
+<ul>
+<li>$F(X,Y,Z)=(X\wedge Y)\vee(\daleth X\wedge Z)$</li>
+<li>$G(X,Y,Z)=(X\wedge Y)\vee (X\wedge Z)\vee(Y\wedge Z)$</li>
+<li>$H(X,Y,Z)=X\oplus Y\oplus Z$</li>
+</ul>
+<blockquote>
+<p>上面的 X,Y,Z都是 32bit的字，与或非等运算都是按位运算</p>
+</blockquote>
+<p>三轮的计算分别是：</p>
+<ol>
+<li>$\phi _0(a,b,c,d,m_k,s)=((a+F(b,c,d)+m_k)\ mod\ 2^{32})\lll s$</li>
+<li>$\phi _1(a,b,c,d,m_k,s)=((a+G(b,c,d)+m_k+0x5a827999)\ mod\ 2^{32})\lll s$</li>
+<li>$\phi _2(a,b,c,d,m_k,s)=((a+H(b,c,d)+m_k+0x6ed9eba1)\ mod\ 2^{32})\lll s$</li>
+</ol>
+<blockquote>
+<p>其中s是一个step-dependence constant，$\lll$s 是循环左移s位。</p>
+</blockquote>
+<blockquote>
+<p>a,b,c,d的初始值为 0x67452301，0xefcdab89，0x98badcfe，0x10325476</p>
+</blockquote>
+<p>对于一个512bit长的block，先将它分成16块(m&lt;sub&gt;0&lt;/sub&gt;,m&lt;/sub&gt;1&lt;/sub&gt;...m&lt;sub&gt;15&lt;/sub&gt;)，每块32bit，压缩函数这样工作：</p>
+<ol>
+<li>
+<p>令(aa,bb,cc,dd)作为chaining variable
+其中如果该block是第一个block，那么 chaining variable 就设为初始的a,b,c,d的值，如果不是，那就用前一block输出的值。每一轮有16步，4个chaining variable 在这16步中分别会更新4次。总共3轮下来更新了12次。</p>
+</li>
+<li>
+<p>执行下面的算式，共48步：
+对于 j=0,1,2，最开始的a,b,c,d为前面的aa,bb,cc,dd
+$a=\phi _j(a,b,c,d,m_i,s_1)$
+$d=\phi _j(d,a,b,c,m_i',s_2)$
+$c=\phi _j(c,d,a,b,m_i'',s_3)$
+$b=\phi _j(b,c,d,a,m_i''',s_4)$</p>
+<blockquote>
+<ul>
+<li>第一轮 j=0，[$m_i,m_i',m_i'',m_i'''$] 为 [0 1 2 3]，[4 5 6 7]，[8 9 10 11]，[12 13 14 15]，$s_1,s_2,s_3,s_4$分别为3 7 11 19</li>
+<li>第二轮 j=1，[$m_i,m_i',m_i'',m_i'''$] 为 [0 4 8 12]，[1 5 9 13]，[2 6 10 14]，[3 7 11 15]，$s_1,s_2,s_3,s_4$分别为3 5 9 13</li>
+<li>第三轮 j=2，[$m_i,m_i',m_i'',m_i'''$] 为 [0 8 4 12]，[2 10 6 14]，[1 9 5 13]，[3 11 7 15]，$s_1,s_2,s_3,s_4$分别为3 9 11 15</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<p>最终得到 $a_{12},b_{12},c_{12},d_{12}$</p>
+<ol>
+<li>将计算得到的 a,b,c,d 与输入的 aa,bb,cc,dd进行下列计算
+$aa=(a+aa)\ mod\ 2^{32}$
+$bb=(b+bb)\ mod\ 2^{32}$
+$cc=(c+cc)\ mod\ 2^{32}$
+$dd=(d+dd)\ mod\ 2^{32}$</li>
+</ol>
+<p>最终得到的 aa,bb,cc,dd作为该block的输出，给到下一个block
+如果当前block是最后一个，那么 aa|bb|cc|dd 这128bit就是最终hash。</p>
+<blockquote>
+<p><strong>Differential cryptanalysis 差分密码分析</strong>
+下面是 wikipedia 中对于 差分密码分析的一些解释：
+这是对于分组密码的首选分析方法。它属于 chosen-plaintext attack
+广义上说，这是研究 输入的不同能如何影响输出的不同。</p>
+<ol>
+<li>选择多对明文，每对明文之间的差别是 相同的</li>
+<li>计算这些明文产生的密文的差别</li>
+<li>从统计的角度来分析它们的规律。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>一对明文的差别与一对密文的差别这两个值合起来称为 differential，它的统计学性质取决于 加密用的 S-box
+如果某个 密文差别 比较频繁，那么就可以断定它不是随机的。</p>
+</blockquote>
+<h2>Chosen-Message Pre-Image Attack to MD4</h2>
+<p>This attack can find collisions with probability 2^−2^ to 2^−6^ and with complexity less than 2^8^ MD4 hash operations</p>
+<p>如果某 Message 满足了一些特定的限制条件，使得对其进行少许改变能导致 hash collision，那么称此 Message 为 Weak Message.</p>
+<p>对于任何 weak message M，满足下面性质的 M' 都会与其 碰撞。
+$\Delta M=M'-M=(\Delta m_0,\Delta m_1,... ...,\Delta m_{15})$
+such that:</p>
+<p>$\Delta m_1=2^{31},\Delta m_2=2^{31} - 2^{28},\Delta m_{12}=-2^{16},\Delta m_i=0,0\leqslant i\leqslant 15,i\neq 1,2,12$</p>
+<p>这是 weak message 需要满足的条件：
+<img src="/images/md4_collision_conditions.png" alt="MD4 collision conditions"></p>
+<p>总共是 121个限制条件，所以任意一条message，其满足上述条件的概率为2^-121^</p>
+<p>那么，此攻击的核心就在于：如何构造满足上面限制的 message</p>
+<h4>第一轮</h4>
+<p>对于MD4 的第一轮16步来说，要构造满足上述条件的message还是比较容易的。
+对于 M[i]，执行类似下面的步骤：</p>
+<ol>
+<li>按照原步骤计算 a&lt;sub&gt;1&lt;/sub&gt;
+$a_1=((a_0+F(b_0,c_0,d_0)+m[0])\ mod\ 2^{32})\lll 3$</li>
+<li>根据限制条件，构造 a&lt;sub&gt;1&lt;/sub&gt;'
+$a_1'=a_1\oplus((a_1\oplus b_0)\wedge(1\ll i))$</li>
+<li>调整 m[0]'
+$m[0]'=(a_1'\ggg 3)-a_0-F(b_0,c_0,d_0)\ mod\ 2^{32}$</li>
+<li>如此往复</li>
+</ol>
+<h4>第二轮</h4>
+<p>第二轮就没有第一轮这么简单了。虽然第二轮中的限制条件与第一轮中的没有重叠部分，但是如果在第二轮中改变了 m[0]，那么第一轮中计算的 a1 就也跟着变了，a1 变了那么后面所有跟 a1 有关的限制条件的计算也都白费了。</p>
+<p>论文中给出的解决方法是：调整 m[i]，使得当 a1 改变的时候，其他与其相关的 chaining variables 保持不变。</p>
+<p>下面说一说如何实现它：</p>
+<ol>
+<li>第二轮的第一步：
+$a_5=((a_4+G(b_4,c_4,d_4)+m[0]+0x5a827999)\ mod\ 2^{32})\lll 3$</li>
+<li>那么 m[0]变为
+$m[0]'=(a_5'\ggg 3)-a_4-G(b_4,c_4,d_4)-0x5a827999\ mod\ 2^{32}$</li>
+<li>a1也随之更新
+$a_1'=((a_0+F(b_0,c_0,d_0)+m[0]')\ mod\ 2^{32})\lll 3$</li>
+<li>d1 本来也要按照下式随着 a1 更新
+$d_1=((d_0+F(a_1,b_0,c_0)+m[1])\ mod\ 2^{32})\lll 7$
+但是我们来重新构造 m[1]，使得 d1 不需要更新
+$m[1]'=(d_1\ggg 7)-d_0-F(a_1',b_0,c_0)\ mod\ 2^{32}$</li>
+<li>m[2],m[3],m[4] 也同理
+$m[2]'=(c_1\ggg 11)-c_0-F(d_1, a_1', b_0)\ mod 2^{32}$
+$m[3]' = (b_1 \ggg 19) - b_0 - f(c_1, d_1, a_1') \mod 2^{32}
+$
+$m[4]' = (a_2 \ggg 3) - a_1' - f(b_1, c_1, d_1) \mod 2^{32}
+$
+改变了这些以后，第一轮又可以顺利执行了。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/10/22/Cryptopal-set1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1407,134 +1650,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/09/10/learnPy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xL">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xL's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/10/learnPy/" itemprop="url">Python基本语法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T00:31:40+08:00">
-                2017-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Python的一些基本语法，以便参考</p>
-<h2 id="查看帮助"><a href="#查看帮助" class="headerlink" title="查看帮助"></a>查看帮助</h2><h3 id="查看本地文档"><a href="#查看本地文档" class="headerlink" title="查看本地文档"></a>查看本地文档</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模块</span></span><br><span class="line">print(module_name. __doc__)</span><br><span class="line"><span class="comment">#函数</span></span><br><span class="line">help(func_name)         print(func_name.__doc__)</span><br></pre></td></tr></table></figure>
-<p>或者可以在终端输入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m pydoc -p  1234</span><br></pre></td></tr></table></figure></p>
-<p>这样你就可以在浏览器的 localhost:1234 查看python文档了</p>
-<h3 id="Web文档"><a href="#Web文档" class="headerlink" title="Web文档"></a>Web文档</h3><p><a href="https://docs.python.org/3/index.html" target="_blank" rel="external">https://docs.python.org/3/index.html</a></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/10/learnPy/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1585,7 +1700,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1598,7 +1713,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2109,6 +2224,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 

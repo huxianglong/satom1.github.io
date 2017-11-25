@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="linux," />
+  <meta name="keywords" content="crypto," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="快速移动0  行首      ^  第一个非空格字符前$  行尾-    上一行行首+   下一行行首 nG       比如100G，移动到第100行G         移动到尾行   (End也可以)ctrl+u    内容向上移动半屏ctrl+d    内容向下移动半屏 h,j,k,l分别为左移，下移，上移，右移">
-<meta name="keywords" content="linux">
+<meta name="description" content="cryptopals challenge 55 MD4 介绍 1990年出现，基于 Merkle-Damgard 架构。它影响了后来的 MD5，SHA1等算法。 hash值长度128bits. 过程  将 message pad 成 512 bit 的倍数 按顺序将每一组 512 bit 通过 compression function 压缩成 128bit，最后一组得到的128bit就是hash值">
+<meta name="keywords" content="crypto">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vim-base">
-<meta property="og:url" content="http://satomhxl.github.io/2017/10/18/Vim-base/index.html">
+<meta property="og:title" content="MD4 Collisions">
+<meta property="og:url" content="http://satomhxl.github.io/2017/11/06/md4-collision/index.html">
 <meta property="og:site_name" content="xL&#39;s Blog">
-<meta property="og:description" content="快速移动0  行首      ^  第一个非空格字符前$  行尾-    上一行行首+   下一行行首 nG       比如100G，移动到第100行G         移动到尾行   (End也可以)ctrl+u    内容向上移动半屏ctrl+d    内容向下移动半屏 h,j,k,l分别为左移，下移，上移，右移">
+<meta property="og:description" content="cryptopals challenge 55 MD4 介绍 1990年出现，基于 Merkle-Damgard 架构。它影响了后来的 MD5，SHA1等算法。 hash值长度128bits. 过程  将 message pad 成 512 bit 的倍数 按顺序将每一组 512 bit 通过 compression function 压缩成 128bit，最后一组得到的128bit就是hash值">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-20T09:19:36.000Z">
+<meta property="og:image" content="http://satomhxl.github.io/images/md4_collision_conditions.png">
+<meta property="og:updated_time" content="2017-11-25T12:35:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Vim-base">
-<meta name="twitter:description" content="快速移动0  行首      ^  第一个非空格字符前$  行尾-    上一行行首+   下一行行首 nG       比如100G，移动到第100行G         移动到尾行   (End也可以)ctrl+u    内容向上移动半屏ctrl+d    内容向下移动半屏 h,j,k,l分别为左移，下移，上移，右移">
+<meta name="twitter:title" content="MD4 Collisions">
+<meta name="twitter:description" content="cryptopals challenge 55 MD4 介绍 1990年出现，基于 Merkle-Damgard 架构。它影响了后来的 MD5，SHA1等算法。 hash值长度128bits. 过程  将 message pad 成 512 bit 的倍数 按顺序将每一组 512 bit 通过 compression function 压缩成 128bit，最后一组得到的128bit就是hash值">
+<meta name="twitter:image" content="http://satomhxl.github.io/images/md4_collision_conditions.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://satomhxl.github.io/2017/10/18/Vim-base/"/>
+  <link rel="canonical" href="http://satomhxl.github.io/2017/11/06/md4-collision/"/>
 
 
 
 
 
-  <title>Vim-base | xL's Blog</title>
+  <title>MD4 Collisions | xL's Blog</title>
   
 
 
@@ -277,7 +279,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/10/18/Vim-base/">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/11/06/md4-collision/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xL">
@@ -294,7 +296,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Vim-base</h1>
+          <h1 class="post-title" itemprop="name headline">MD4 Collisions</h1>
         
 
         <div class="post-meta">
@@ -306,8 +308,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T16:15:26+08:00">
-                2017-10-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-06T18:42:55+08:00">
+                2017-11-06
               </time>
             
 
@@ -344,85 +346,130 @@
       
 
       
-        <h2 id="快速移动"><a href="#快速移动" class="headerlink" title="快速移动"></a>快速移动</h2><p><code>0</code>  行首      <code>^</code>  第一个非空格字符前<br><code>$</code>  行尾<br><code>-</code>    上一行行首<br><code>+</code>   下一行行首</p>
-<p><code>nG</code>       比如100G，移动到第100行<br><code>G</code>         移动到尾行   (End也可以)<br><code>ctrl+u</code>    内容向上移动半屏<br><code>ctrl+d</code>    内容向下移动半屏</p>
-<p><code>h,j,k,l</code>分别为左移，下移，上移，右移</p>
-<a id="more"></a>
-<h2 id="模式介绍"><a href="#模式介绍" class="headerlink" title="模式介绍"></a>模式介绍</h2><p>Vim 有 4 种模式，<strong>正常模式，插入模式，可视化模式，命令模式</strong></p>
-<ul>
-<li>正常模式 ： 主要用于浏览。打开vim就是正常模式，任何模式下按<code>ESC</code>进入正常模式 </li>
-<li>插入模式 ： 正常模式下按  <code>i</code>光标前插入  <code>a</code>光标后插入  <code>o</code>光标下新开一行插入  <code>s</code>删除光标处插入   等等</li>
-<li>命令模式 ： 输入 <code>：</code> 进入。多用于操作文件、设置编辑器</li>
-<li>可视模式 ： 正常模式下，先将光标移动到想要的位置，然后进入开始选择。<ol>
-<li>按<code>v</code>进入可视模式，以字符为单位</li>
-<li>按<code>V</code>进入可视行模式，以行为单位</li>
-<li>按<code>ctrl+v</code>进入可视块模式，以一个矩形选取对象</li>
+        <p><a href="https://cryptopals.com/sets/7/challenges/55" target="_blank" rel="external">cryptopals challenge 55</a></p>
+<h2>MD4 介绍</h2>
+<p>1990年出现，基于 Merkle-Damgard 架构。它影响了后来的 MD5，SHA1等算法。</p>
+<p>hash值长度128bits.</p>
+<h3>过程</h3>
+<ol>
+<li>将 message pad 成 512 bit 的倍数</li>
+<li>按顺序将每一组 512 bit 通过 compression function 压缩成 128bit，最后一组得到的128bit就是hash值</li>
 </ol>
-</li>
-</ul>
-<h3 id="正常模式"><a href="#正常模式" class="headerlink" title="正常模式"></a>正常模式</h3><p><code>u</code> 撤回 <code>ctrl+u</code> 取消撤回<br><code>yy</code> 复制当前行<br><code>p</code> 粘贴<br><code>dd</code> 剪切当前行</p>
-<h3 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h3><ul>
-<li><code>ctrl+[</code>：退出insert模式</li>
-<li><code>ctrl+o</code>：执行一个正常模式下的操作。</li>
-</ul>
-<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><ul>
-<li>保存退出 ： <code>:wq</code></li>
-<li>不保存退出 ： <code>!q</code></li>
-<li>查找 ： 输入<code>/</code>，在后面跟上pattern，此时光标会停在查找结果的前一个字符处。按<code>n</code>查找下一个，按<code>N</code>查找上一个<br>默认大小写敏感。如果想不敏感查找则在后面加上<code>\c</code></li>
-<li>替换 ： <ul>
-<li><code>11s/a/b/g</code> 将第11行所有 ‘a’ 都替换成 ‘b’ 。<code>g</code>表示所有</li>
-<li><code>%s/a/b/</code> 将每一行的第一个a换成b</li>
-<li><code>3,6s/a/b/s</code> 将第3～6行的所有 a 换成 b</li>
-<li>可用 <code>.</code> 表示当前行，<code>$</code>表示最后一行</li>
-</ul>
-</li>
-</ul>
-<h3 id="可视模式"><a href="#可视模式" class="headerlink" title="可视模式"></a>可视模式</h3><p>该模式主要是为了选取。熟练掌握快速移动，能更快地配合此模式。</p>
+<h4>压缩函数</h4>
+<p>compression function 共有3轮，每一轮用到一个不同的函数</p>
 <ul>
-<li>复制<code>y</code>       (复制内容将暂时保存在vim的寄存器中。)</li>
-<li>粘贴<code>p</code>        </li>
-<li>剪切<code>d</code>         </li>
+<li>$F(X,Y,Z)=(X\wedge Y)\vee(\daleth X\wedge Z)$</li>
+<li>$G(X,Y,Z)=(X\wedge Y)\vee (X\wedge Z)\vee(Y\wedge Z)$</li>
+<li>$H(X,Y,Z)=X\oplus Y\oplus Z$</li>
 </ul>
-<h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><ul>
-<li>查看记录<code>:reg</code>        这个命令会显示以下的缓存内容：</li>
-</ul>
-<p><code>“</code>   最后一次操作内容<br><code>0</code>  最近一次复制内容，<code>1~9</code> 最近删除内容。<br><code>a-z</code> 在指定时可用<br><code>*</code>和<code>+</code>   外部剪切板<br><code>.</code> 最近插入文本<br><code>:</code>  最近命令<br><code>%</code> 当前文件名<br><code>/</code> 最近的搜索模式</p>
 <blockquote>
-<p>其中，外部粘贴板只有在安装了GVim之后才支持</p>
+<p>上面的 X,Y,Z都是 32bit的字，与或非等运算都是按位运算</p>
 </blockquote>
-<p>(正常模式下)</p>
-<ul>
-<li>粘贴外部代码 <code>&quot;+P</code> 或者 <code>&quot;*P</code> (注意引号)</li>
-<li>复制到外部剪切板   <code>&quot;+Y</code></li>
-</ul>
+<p>三轮的计算分别是：</p>
+<ol>
+<li>$\phi _0(a,b,c,d,m_k,s)=((a+F(b,c,d)+m_k)\ mod\ 2^{32})\lll s$</li>
+<li>$\phi _1(a,b,c,d,m_k,s)=((a+G(b,c,d)+m_k+0x5a827999)\ mod\ 2^{32})\lll s$</li>
+<li>$\phi _2(a,b,c,d,m_k,s)=((a+H(b,c,d)+m_k+0x6ed9eba1)\ mod\ 2^{32})\lll s$</li>
+</ol>
 <blockquote>
-<p>使用指定寄存器<br>在正常模式下，按<code>q</code>，再按随机一个字母，则窗口下方会出现<code>recording</code> 字样<br>此时你输入的内容会被记录下来。再按<code>q</code>退出记录。<br>这样你在记录的期间输入的代码就可以被很方便地调用了。<br>这个功能在有重复代码比较多的地方非常有用。比如 html 的标签等。</p>
-<p>举个例子，我们使用记录来避免写 html 代码时千篇一律的开头格式<br>(在正常模式下)：<br>按<code>qa</code>     记录将被保存在代号 a 的缓存中<br><code>1G</code>        跳转到第一行<br>切换到 Insert 模式，输入 html 的开头标签，然后切换到正常模式<br><code>G</code>         跳转到最后一行<br>同样地，输入 html 的结尾标签，切换到正常模式<br><code>q</code>   记录完成<br>此时，按下<code>@a</code>   那么你刚才记录的代码就会被调用。</p>
+<p>其中s是一个step-dependence constant，$\lll$s 是循环左移s位。</p>
 </blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>Vim的配置文件 ~/.vimrc</p>
-<h3 id="多标签页-窗口"><a href="#多标签页-窗口" class="headerlink" title="多标签页/窗口"></a>多标签页/窗口</h3><ul>
-<li><code>:tabe 文件名</code> 打开新的文件作为标签页</li>
-<li><code>gt</code> 切换下一个标签 <code>gT</code> 切换上一个标签</li>
-<li><code>:tabc</code> 关闭当前标签页</li>
-</ul>
-<hr>
-<ul>
-<li><p><code>:split 窗口名</code> 新建窗口 <code>:vsplit 窗口名</code> 纵向新建窗口</p>
 <blockquote>
-<p>也可写成 <code>:sp</code> <code>:vsp</code></p>
+<p>a,b,c,d的初始值为 0x67452301，0xefcdab89，0x98badcfe，0x10325476</p>
+</blockquote>
+<p>对于一个512bit长的block，先将它分成16块(m&lt;sub&gt;0&lt;/sub&gt;,m&lt;/sub&gt;1&lt;/sub&gt;...m&lt;sub&gt;15&lt;/sub&gt;)，每块32bit，压缩函数这样工作：</p>
+<ol>
+<li>
+<p>令(aa,bb,cc,dd)作为chaining variable
+其中如果该block是第一个block，那么 chaining variable 就设为初始的a,b,c,d的值，如果不是，那就用前一block输出的值。每一轮有16步，4个chaining variable 在这16步中分别会更新4次。总共3轮下来更新了12次。</p>
+</li>
+<li>
+<p>执行下面的算式，共48步：
+对于 j=0,1,2，最开始的a,b,c,d为前面的aa,bb,cc,dd
+$a=\phi _j(a,b,c,d,m_i,s_1)$
+$d=\phi _j(d,a,b,c,m_i',s_2)$
+$c=\phi _j(c,d,a,b,m_i'',s_3)$
+$b=\phi _j(b,c,d,a,m_i''',s_4)$</p>
+<blockquote>
+<ul>
+<li>第一轮 j=0，[$m_i,m_i',m_i'',m_i'''$] 为 [0 1 2 3]，[4 5 6 7]，[8 9 10 11]，[12 13 14 15]，$s_1,s_2,s_3,s_4$分别为3 7 11 19</li>
+<li>第二轮 j=1，[$m_i,m_i',m_i'',m_i'''$] 为 [0 4 8 12]，[1 5 9 13]，[2 6 10 14]，[3 7 11 15]，$s_1,s_2,s_3,s_4$分别为3 5 9 13</li>
+<li>第三轮 j=2，[$m_i,m_i',m_i'',m_i'''$] 为 [0 8 4 12]，[2 10 6 14]，[1 9 5 13]，[3 11 7 15]，$s_1,s_2,s_3,s_4$分别为3 9 11 15</li>
+</ul>
 </blockquote>
 </li>
-<li><p><code>ctrl+w+j/k</code> 切换窗口 <code>ctrl+w 双击</code> 快速切换窗口</p>
-</li>
-<li><code>:q!</code> 或 <code>:close</code> 退出窗口</li>
-</ul>
-<h3 id="不同进制"><a href="#不同进制" class="headerlink" title="不同进制"></a>不同进制</h3><p><code>vim -b</code>    以二进制打开文件</p>
-<p>现在我们以 16进制 来查看一张 jpeg 格式的图片<br><code>vim picture.jpeg -b</code>         先以二进制打开<br>然后在命令行模式输入    <code>:%!xxd</code>    就可以以16进制查看了</p>
-<p>编辑完以后，我们要将其还原为二进制文件，不然文件会无法打开<br><code>:%!xxd -r</code>        (参数 -r 将16进制还原成二进制)</p>
-<h3 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h3><h4 id="显示行号"><a href="#显示行号" class="headerlink" title="显示行号"></a>显示行号</h4><p>在正常模式下<br><code>:set number</code>    显示行号<br><code>:set nonu</code>    不显示行号<br><code>:set mouse=a</code>  这样在用鼠标进行选取时，不会将行号也选取到</p>
+</ol>
+<p>最终得到 $a_{12},b_{12},c_{12},d_{12}$</p>
+<ol>
+<li>将计算得到的 a,b,c,d 与输入的 aa,bb,cc,dd进行下列计算
+$aa=(a+aa)\ mod\ 2^{32}$
+$bb=(b+bb)\ mod\ 2^{32}$
+$cc=(c+cc)\ mod\ 2^{32}$
+$dd=(d+dd)\ mod\ 2^{32}$</li>
+</ol>
+<p>最终得到的 aa,bb,cc,dd作为该block的输出，给到下一个block
+如果当前block是最后一个，那么 aa|bb|cc|dd 这128bit就是最终hash。</p>
 <blockquote>
-<p>如果想要每次打开vim时都显示行号，则打开/etc/vim/vimrc   在其中加上set number即可</p>
+<p><strong>Differential cryptanalysis 差分密码分析</strong>
+下面是 wikipedia 中对于 差分密码分析的一些解释：
+这是对于分组密码的首选分析方法。它属于 chosen-plaintext attack
+广义上说，这是研究 输入的不同能如何影响输出的不同。</p>
+<ol>
+<li>选择多对明文，每对明文之间的差别是 相同的</li>
+<li>计算这些明文产生的密文的差别</li>
+<li>从统计的角度来分析它们的规律。</li>
+</ol>
 </blockquote>
+<blockquote>
+<p>一对明文的差别与一对密文的差别这两个值合起来称为 differential，它的统计学性质取决于 加密用的 S-box
+如果某个 密文差别 比较频繁，那么就可以断定它不是随机的。</p>
+</blockquote>
+<h2>Chosen-Message Pre-Image Attack to MD4</h2>
+<p>This attack can find collisions with probability 2^−2^ to 2^−6^ and with complexity less than 2^8^ MD4 hash operations</p>
+<p>如果某 Message 满足了一些特定的限制条件，使得对其进行少许改变能导致 hash collision，那么称此 Message 为 Weak Message.</p>
+<p>对于任何 weak message M，满足下面性质的 M' 都会与其 碰撞。
+$\Delta M=M'-M=(\Delta m_0,\Delta m_1,... ...,\Delta m_{15})$
+such that:</p>
+<p>$\Delta m_1=2^{31},\Delta m_2=2^{31} - 2^{28},\Delta m_{12}=-2^{16},\Delta m_i=0,0\leqslant i\leqslant 15,i\neq 1,2,12$</p>
+<p>这是 weak message 需要满足的条件：
+<img src="/images/md4_collision_conditions.png" alt="MD4 collision conditions"></p>
+<p>总共是 121个限制条件，所以任意一条message，其满足上述条件的概率为2^-121^</p>
+<p>那么，此攻击的核心就在于：如何构造满足上面限制的 message</p>
+<h4>第一轮</h4>
+<p>对于MD4 的第一轮16步来说，要构造满足上述条件的message还是比较容易的。
+对于 M[i]，执行类似下面的步骤：</p>
+<ol>
+<li>按照原步骤计算 a&lt;sub&gt;1&lt;/sub&gt;
+$a_1=((a_0+F(b_0,c_0,d_0)+m[0])\ mod\ 2^{32})\lll 3$</li>
+<li>根据限制条件，构造 a&lt;sub&gt;1&lt;/sub&gt;'
+$a_1'=a_1\oplus((a_1\oplus b_0)\wedge(1\ll i))$</li>
+<li>调整 m[0]'
+$m[0]'=(a_1'\ggg 3)-a_0-F(b_0,c_0,d_0)\ mod\ 2^{32}$</li>
+<li>如此往复</li>
+</ol>
+<h4>第二轮</h4>
+<p>第二轮就没有第一轮这么简单了。虽然第二轮中的限制条件与第一轮中的没有重叠部分，但是如果在第二轮中改变了 m[0]，那么第一轮中计算的 a1 就也跟着变了，a1 变了那么后面所有跟 a1 有关的限制条件的计算也都白费了。</p>
+<p>论文中给出的解决方法是：调整 m[i]，使得当 a1 改变的时候，其他与其相关的 chaining variables 保持不变。</p>
+<p>下面说一说如何实现它：</p>
+<ol>
+<li>第二轮的第一步：
+$a_5=((a_4+G(b_4,c_4,d_4)+m[0]+0x5a827999)\ mod\ 2^{32})\lll 3$</li>
+<li>那么 m[0]变为
+$m[0]'=(a_5'\ggg 3)-a_4-G(b_4,c_4,d_4)-0x5a827999\ mod\ 2^{32}$</li>
+<li>a1也随之更新
+$a_1'=((a_0+F(b_0,c_0,d_0)+m[0]')\ mod\ 2^{32})\lll 3$</li>
+<li>d1 本来也要按照下式随着 a1 更新
+$d_1=((d_0+F(a_1,b_0,c_0)+m[1])\ mod\ 2^{32})\lll 7$
+但是我们来重新构造 m[1]，使得 d1 不需要更新
+$m[1]'=(d_1\ggg 7)-d_0-F(a_1',b_0,c_0)\ mod\ 2^{32}$</li>
+<li>m[2],m[3],m[4] 也同理
+$m[2]'=(c_1\ggg 11)-c_0-F(d_1, a_1', b_0)\ mod 2^{32}$
+$m[3]' = (b_1 \ggg 19) - b_0 - f(c_1, d_1, a_1') \mod 2^{32}
+$
+$m[4]' = (a_2 \ggg 3) - a_1' - f(b_1, c_1, d_1) \mod 2^{32}
+$
+改变了这些以后，第一轮又可以顺利执行了。</li>
+</ol>
 
       
     </div>
@@ -440,7 +487,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag"># linux</a>
+            <a href="/tags/crypto/" rel="tag"># crypto</a>
           
         </div>
       
@@ -453,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/18/gcc-base/" rel="next" title="gcc_base">
-                <i class="fa fa-chevron-left"></i> gcc_base
+              <a href="/2017/10/22/Cryptopal-set1/" rel="next" title="Cryptopal-set1">
+                <i class="fa fa-chevron-left"></i> Cryptopal-set1
               </a>
             
           </div>
@@ -463,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/22/Cryptopal-set1/" rel="prev" title="Cryptopal-set1">
-                Cryptopal-set1 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/18/dvwa登陆机制与cookie-session/" rel="prev" title="dvwa登陆机制与cookie,session">
+                dvwa登陆机制与cookie,session <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -588,7 +635,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速移动"><span class="nav-number">1.</span> <span class="nav-text">快速移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模式介绍"><span class="nav-number">2.</span> <span class="nav-text">模式介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正常模式"><span class="nav-number">2.1.</span> <span class="nav-text">正常模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入模式"><span class="nav-number">2.2.</span> <span class="nav-text">插入模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令模式"><span class="nav-number">2.3.</span> <span class="nav-text">命令模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可视模式"><span class="nav-number">2.4.</span> <span class="nav-text">可视模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记录"><span class="nav-number">3.</span> <span class="nav-text">记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多标签页-窗口"><span class="nav-number">4.1.</span> <span class="nav-text">多标签页/窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同进制"><span class="nav-number">4.2.</span> <span class="nav-text">不同进制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置"><span class="nav-number">4.3.</span> <span class="nav-text">设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显示行号"><span class="nav-number">4.3.1.</span> <span class="nav-text">显示行号</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">MD4 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">压缩函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">Chosen-Message Pre-Image Attack to MD4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.1.</span> <span class="nav-text">第一轮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.0.2.</span> <span class="nav-text">第二轮</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
