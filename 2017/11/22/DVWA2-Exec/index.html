@@ -88,7 +88,7 @@
 <meta property="og:description" content="该漏洞允许用户在服务器上执行任意命令。 该命令与 code injection 的区别在于：code injection 与注入的语言有关，比如 服务器上执行的语言为 php，那么可利用漏洞执行 php 代码。如PHP中的 require，eval() 等，都容易引发 code injection 漏洞。 而 command injection 常常发生于 服务器对输入 不加有效过滤而传给 sys">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://satomhxl.github.io/images/dvwa2_1.png">
-<meta property="og:updated_time" content="2017-11-22T12:56:17.000Z">
+<meta property="og:updated_time" content="2017-11-25T15:56:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DVWA(2)-command injection">
 <meta name="twitter:description" content="该漏洞允许用户在服务器上执行任意命令。 该命令与 code injection 的区别在于：code injection 与注入的语言有关，比如 服务器上执行的语言为 php，那么可利用漏洞执行 php 代码。如PHP中的 require，eval() 等，都容易引发 code injection 漏洞。 而 command injection 常常发生于 服务器对输入 不加有效过滤而传给 sys">
@@ -390,7 +390,8 @@
 <li>尽量避免调用 shell , 如 <code>system()</code> , <code>exec()</code> , <code>shell_exec()</code> 等函数</li>
 <li>采用白名单或黑名单的方式，仔细过滤输入。</li>
 </ol>
-<p>DVWA 里的 command injection 部分感觉内容非常有限，command injection 这块还有待日后完善。</p>
+<p>如今在网站中很难发现明显的 command injection 漏洞，一般都需要用 自动化工具进行模糊测试什么的。如何测试、发现command injection漏洞，这又是另一个话题了。</p>
+<p>command injection 可以说是最难发现的web漏洞之一，但其带来的影响也是灾难性的。</p>
 
       
     </div>
@@ -430,6 +431,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/03/DVWA3-CSRF/" rel="prev" title="DVWA(3)-CSRF">
+                DVWA(3)-CSRF <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -504,7 +509,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
