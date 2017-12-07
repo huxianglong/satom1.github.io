@@ -87,14 +87,13 @@
 <meta property="og:site_name" content="xL&#39;s Blog">
 <meta property="og:description" content="最近打算开始分析一下 dvwa 项目的源码，趁此机会再把 web安全 以及 php 的基础知识复习一遍。 既然要全部分析，那就按顺序来吧。 DVWA 的第一个项目为 Brute Force，暴力穷举。 在 dvwa的对应页面中，我们需要做的就是爆破登陆界面的账号密码。这里假设我们已经确定了 用户名为 admin ，爆破其密码。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://satomhxl.github.io/images/dvwa1.png">
-<meta property="og:image" content="http://satomhxl.github.io/images/hydra1.png">
-<meta property="og:image" content="http://satomhxl.github.io/images/dvwa2.png">
-<meta property="og:updated_time" content="2017-11-18T10:10:17.000Z">
+<meta property="og:image" content="http://satomhxl.github.io/images/brute1.png">
+<meta property="og:image" content="http://satomhxl.github.io/images/brute2.png">
+<meta property="og:updated_time" content="2017-12-07T09:33:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DVWA(1)-Brute Force">
 <meta name="twitter:description" content="最近打算开始分析一下 dvwa 项目的源码，趁此机会再把 web安全 以及 php 的基础知识复习一遍。 既然要全部分析，那就按顺序来吧。 DVWA 的第一个项目为 Brute Force，暴力穷举。 在 dvwa的对应页面中，我们需要做的就是爆破登陆界面的账号密码。这里假设我们已经确定了 用户名为 admin ，爆破其密码。">
-<meta name="twitter:image" content="http://satomhxl.github.io/images/dvwa1.png">
+<meta name="twitter:image" content="http://satomhxl.github.io/images/brute1.png">
 
 
 
@@ -352,7 +351,7 @@
 <p>既然要全部分析，那就按顺序来吧。 DVWA 的第一个项目为 Brute Force，暴力穷举。</p>
 <p>在 dvwa的对应页面中，我们需要做的就是爆破登陆界面的账号密码。<br>这里假设我们已经确定了 用户名为 <code>admin</code> ，爆破其密码。<br><a id="more"></a></p>
 <h2 id="Low-level"><a href="#Low-level" class="headerlink" title="Low-level"></a>Low-level</h2><p>先用 Burp Suite 抓包</p>
-<p><img src="/images/dvwa1.png" alt="dvwa-form"></p>
+<p><img src="/images/brute1.png" alt="dvwa-form"></p>
 <p>现在我们使用 hydra 工具进行爆破。<br>需要准备的内容如下：</p>
 <ul>
 <li>目标 ipv</li>
@@ -362,7 +361,7 @@
 <li>密码表</li>
 </ul>
 <p>接下来开始爆破</p>
-<p><img src="/images/hydra1.png" alt="hydra"></p>
+<p><img src="/images/brute2.png" alt="hydra"></p>
 <ul>
 <li>因为 Low-level 下提交表单用的是 Get 方式，所以上面的 Service 参数填 <code>http-get-form</code>。</li>
 <li>试错密码时页面会返回消息 <code>Username and/or password incorrect.</code>，这个也要填上去。</li>
@@ -375,7 +374,6 @@
 <li>每次试错密码会随机 sleep 0～3秒。</li>
 </ul>
 <p>延时问题不大，主要需要解决的是 token 验证问题。</p>
-<p><img src="/images/dvwa2.png" alt="dvwa2"></p>
 <p>这样一来直接使用工具就有一定的局限性了，不过我们可以构造脚本来解决这个问题。<br>写一个 python 脚本：</p>
 <ul>
 <li>借助 <code>requests</code> 库 接收html 和发送 http 请求。</li>
