@@ -96,7 +96,7 @@
 <meta property="og:image" content="http://satomhxl.github.io/images/store3.png">
 <meta property="og:image" content="http://satomhxl.github.io/images/store2.png">
 <meta property="og:image" content="http://satomhxl.github.io/images/store1.png">
-<meta property="og:updated_time" content="2017-12-10T08:15:33.000Z">
+<meta property="og:updated_time" content="2017-12-10T08:46:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DVWA(4)-XSS">
 <meta name="twitter:description" content="Javascript的出现，使得恶意代码能够在用户的浏览器端执行，取得敏感信息。为了防止这种现象，实施了同源策略。与之相应的，如今的浏览器以及服务端也实行了访问控制。 而XSS(cross site script)能将恶意代码(通常是前端的)注入到可信的站点，当用户访问的时候，由于浏览器认为该代码是可信的，所以会在用户的浏览器中执行它。恶意代码也得以顺利访问用户的cookie，session或其">
@@ -356,6 +356,7 @@
       
         <p>Javascript的出现，使得恶意代码能够在用户的浏览器端执行，取得敏感信息。为了防止这种现象，实施了同源策略。与之相应的，如今的浏览器以及服务端也实行了访问控制。</p>
 <p>而XSS(cross site script)能将恶意代码(通常是前端的)注入到可信的站点，当用户访问的时候，由于浏览器认为该代码是可信的，所以会在用户的浏览器中执行它。恶意代码也得以顺利访问用户的cookie，session或其他敏感信息。网站的所有者无法在 html 源码中看到恶意脚本，也无法在 html response 中看到。</p>
+<a id="more"></a>
 <h2 id="XSS-DOM"><a href="#XSS-DOM" class="headerlink" title="XSS-DOM"></a>XSS-DOM</h2><p>xss攻击主要可以分为 Reflected XSS ，Stored XSS，不过还有一种相对不太著名的攻击方式： DOM based XSS</p>
 <p>这种攻击方式的环境都在客户端，与服务端基本没有什么关系。也就是说，虽然服务器端传回的是正常页面，但是由于用户端存在恶意代码，使得页面在浏览器中render之后变得不正常。</p>
 <h3 id="low-level"><a href="#low-level" class="headerlink" title="low-level"></a>low-level</h3><p>界面<br><img src="/images/dom2.png" alt=""><br>一个下拉框，点击按钮发送选择的 language。</p>
