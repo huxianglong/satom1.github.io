@@ -88,7 +88,7 @@
 <meta property="og:description" content="该漏洞允许用户在服务器上执行任意命令。 该命令与 code injection 的区别在于：code injection 与注入的语言有关，比如 服务器上执行的语言为 php，那么可利用漏洞执行 php 代码。如PHP中的 require，eval() 等，都容易引发 code injection 漏洞。 而 command injection 常常发生于 服务器对输入 不加有效过滤而传给 sys">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://satomhxl.github.io/images/exec1.png">
-<meta property="og:updated_time" content="2017-12-07T09:34:07.000Z">
+<meta property="og:updated_time" content="2017-12-17T13:34:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DVWA(2)-command injection">
 <meta name="twitter:description" content="该漏洞允许用户在服务器上执行任意命令。 该命令与 code injection 的区别在于：code injection 与注入的语言有关，比如 服务器上执行的语言为 php，那么可利用漏洞执行 php 代码。如PHP中的 require，eval() 等，都容易引发 code injection 漏洞。 而 command injection 常常发生于 服务器对输入 不加有效过滤而传给 sys">
@@ -374,9 +374,9 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$substitutions = <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">'&amp;'</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">';'</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">'| '</span> =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">'-'</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">'$'</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">'('</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">')'</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">'`'</span>  =&gt; <span class="string">''</span>,</span><br><span class="line">    <span class="string">'||'</span> =&gt; <span class="string">''</span>,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <p>然而这里令人很匪夷所思的是它不愿直接过滤<code>|</code>，导致了过滤的漏洞。<br>其实还可以过滤掉 <code>\</code> 和 空格，来进一步加强安全性。</p>
 <blockquote>
-<p>str_replace() 按照数组中的内容进行替换时的执行逻辑为 ： 先按照array的第一行一直替换，直到没有匹配。再按照数组的第二行一直替换，直到没有匹配。再…</p>
+<p>str_replace() 按照数组中的内容进行替换时的执行逻辑为 ： 先按照array的第一行替换，直到没有匹配。再按照数组的第二行替换，直到没有匹配。再…<br>不过该函数并不安全，因为它貌似只会匹配一遍，所以经常可以用双写来绕过其过滤。</p>
 </blockquote>
-<p>绕过的方式有</p>
+<p>这里绕过的方式有</p>
 <ol>
 <li>奇数个<code>|</code>，右边不跟空格</li>
 <li>任意多个 <code>|</code>后跟n个空格，那么按照array第三行的规则一直消去。直到右边没有空格时，还剩下奇数个<code>|</code>即可。</li>
@@ -509,7 +509,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
