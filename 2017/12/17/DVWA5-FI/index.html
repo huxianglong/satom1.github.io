@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://satomhxl.github.io/images/fi4.png">
 <meta property="og:image" content="http://satomhxl.github.io/images/fi5.png">
 <meta property="og:image" content="http://satomhxl.github.io/images/fi3.png">
-<meta property="og:updated_time" content="2017-12-17T15:23:09.000Z">
+<meta property="og:updated_time" content="2018-03-10T06:58:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DVWA(5)-File Inclusion">
 <meta name="twitter:description" content="在 php 中经常会用include、require等命令包含其他源代码来提供或扩展当前文件的功能。如果包含的文件非php源代码，则会输出其内容。(如果这些文件的内容中有符合语法格式的php代码，那么这些代码会被执行)">
@@ -355,7 +355,7 @@
 <p>文件包含可分为本地包含(LFI) 和远程包含(RFI)。<br>两者的区别：</p>
 <ul>
 <li>本地包含，即被包含的文件在本地。它相当于将包含的文件代码都复制粘贴到本文件中执行。</li>
-<li>而远程包含则只是将包含的文件的执行结果返回(文件之间的变量等内容不共享)。它需要 <code>allow_url_fopen</code> 与 <code>allow_url_include</code> 启用。<br>另外，当你想要传递给 被包含的文件 一个参数时：<br>remote include :<code>include(&quot;http://example.com/includes/example.php?var=exam&quot;);</code><br>local include : <code>$var = &quot;exam&quot;; include($_SERVER[&#39;DOCUMENT_ROOT&#39;].&quot;/includes/example.php&quot;);</code></li>
+<li>而远程包含则只是将包含的文件的执行结果返回(文件之间的变量等内容不共享)。它需要 <code>allow_url_fopen</code> 与 <code>allow_url_include</code> 启用。</li>
 </ul>
 <p><code>allow_url_fopen</code><br>该设置可用于从远程服务器中取得数据。 该选项默认开启。<br>它使得 <code>file_get_content()</code>函数 以及 include , require 等能取得远程文件。<br>如果接受用户输入的数据时不注意过滤，可导致代码注入。因此建议关闭选项。若要取得远程数据，可以使用 PHP 提供的 <a href="http://php.net/manual/zh/book.curl.php" target="_blank" rel="external">cURL</a> 函数集。</p>
 <p><code>allow_url_include</code><br>配置允许require , include 等函数按照 url 来包含一个远程文件。<br>需要 <code>allow_url_fopen</code> 作为前提。<br>这个配置在 php.ini 中默认禁用，因为它不安全，效率低，没必要。</p>
@@ -388,6 +388,9 @@
 <p>虽然页面会返回错误，但是发送的消息内容会被保存在 access.log 中。<br>那么如果本地包含文件能有权限包含此文件的话，我们就可以执行刚刚使用nc发送的代码。</p>
 <hr>
 <p>总体来说，LFI比较常见，但是利用比RFI难。一般FI会配合文件上传一起用。<br>这篇写的比较匆忙了，就先这么写吧，后续写到文件上传再把两篇整合一下。</p>
+<ul>
+<li>参考链接<br><a href="https://null-byte.wonderhowto.com/how-to/exploit-php-file-inclusion-web-apps-0179955/" target="_blank" rel="external">https://null-byte.wonderhowto.com/how-to/exploit-php-file-inclusion-web-apps-0179955/</a></li>
+</ul>
 
       
     </div>
@@ -427,6 +430,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/10/渗透场景/" rel="prev" title="渗透场景参考图">
+                渗透场景参考图 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -501,7 +508,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -514,7 +521,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -569,7 +576,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
