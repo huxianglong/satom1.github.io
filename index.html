@@ -276,6 +276,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2018/03/13/DVWA6-FU/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xL">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xL's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/13/DVWA6-FU/" itemprop="url">DVWA(6)-File Uploads</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T20:38:45+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="File-Upload"><a href="#File-Upload" class="headerlink" title="File Upload"></a>File Upload</h1><p>网站启用文件上传的功能是一个有很大风险的行为。如果恶意用户成功上传了含有恶意代码的文件，那么接下来只需要想办法执行该文件–直接访问，或者用文件包含(如果运气实在不错，可以利用<code>eval()</code>)。<br>因此，必须仔细过滤用户上传的文件。</p>
+<h2 id="low-level"><a href="#low-level" class="headerlink" title="low-level"></a>low-level</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( $_POST[ <span class="string">'Upload'</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">	$target_path  = DVWA_WEB_PAGE_TO_ROOT . <span class="string">"hackable/uploads/"</span>;</span><br><span class="line">	$target_path .= basename( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ] );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Can we move the file to the upload folder?</span></span><br><span class="line">	<span class="keyword">if</span>( !move_uploaded_file( $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'tmp_name'</span> ], $target_path ) ) &#123;</span><br><span class="line">		<span class="comment">// No</span></span><br><span class="line">		$html .= <span class="string">'&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Yes!</span></span><br><span class="line">		$html .= <span class="string">"&lt;pre&gt;&#123;$target_path&#125; succesfully uploaded!&lt;/pre&gt;"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>上传的方式为<a href="http://php.net/manual/zh/features.file-upload.post-method.php" target="_blank" rel="external">POST</a>。</li>
+<li><ul>
+<li>全局变量<code>$_FILES</code> 包含上传文件的信息。</li>
+<li><code>upload</code>为上传表单中指定的字段</li>
+<li><code>$_FILES[ &#39;uploaded&#39; ][ &#39;name&#39; ]</code>为文件在客户端的原名称</li>
+<li><code>$_FILES[ &#39;uploaded&#39; ][ &#39;tmp_name&#39; ]</code>为文件被上传后在服务端储存的临时文件名。</li>
+</ul>
+</li>
+<li><code>move_upload_file()</code>函数先检查文件以确保其为有效的上传文件(是否通过PHP POST方式上传)，若检查通过则将文件转移到指定目录中。</li>
+</ul>
+<p>这里没有对上传文件进行任何检查，而且上传的路径也返回给了用户。<br><img src="/images/fu2.png" alt=""><br>那么我们直接访问 <code>http://172.16.65.145/DVWA/hackable/uploads/test.php</code>， 可以执行此文件。</p>
+<h2 id="medium-level"><a href="#medium-level" class="headerlink" title="medium-level"></a>medium-level</h2><p>在进行上传文件的转移之前，加上了这么几句代码进行过滤：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// File information</span></span><br><span class="line">$uploaded_type = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'type'</span> ];</span><br><span class="line">$uploaded_size = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'size'</span> ];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is it an image?</span></span><br><span class="line"><span class="keyword">if</span>( ( $uploaded_type == <span class="string">"image/jpeg"</span> || $uploaded_type == <span class="string">"image/png"</span> ) &amp;&amp;</span><br><span class="line">	( $uploaded_size &lt; <span class="number">100000</span> ) ) </span><br><span class="line">. . .</span><br></pre></td></tr></table></figure>
+<p>可以看出，分别是根据 类型 以及根据 文件大小 过滤。100000B 约为 97kb。<br>根据文件大小过滤一般不会造成太大影响。而根据文件类型进行过滤所用的方法也存在不足。<br>以下是<a href="http://php.net/manual/en/features.file-upload.post-method.php" target="_blank" rel="external">官网</a>对变量<code>$_FILES[&#39;userfile&#39;][&#39;type&#39;]</code>的介绍：</p>
+<blockquote>
+<p>You could use the <code>$_FILES[&#39;userfile&#39;][&#39;type&#39;]</code> variable to throw away any files that didn’t match a certain type criteria, but use this only as first of a series of checks, because this value is completely under the control of the client and not checked on the PHP side. </p>
+</blockquote>
+<p>用Burp Suite抓包改之即可。<br><img src="/images/fu3.png" alt=""><br>将上面图片中最后一行的<code>application/pdf</code>改为<code>image/jpeg</code>即可。</p>
+<h2 id="high-level"><a href="#high-level" class="headerlink" title="high-level"></a>high-level</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, <span class="string">'.'</span> ) + <span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span>( ( strtolower( $uploaded_ext ) == <span class="string">"jpg"</span> || strtolower( $uploaded_ext ) == <span class="string">"jpeg"</span> || strtolower( $uploaded_ext ) == <span class="string">"png"</span> ) </span><br><span class="line">&amp;&amp; ( $uploaded_size &lt; <span class="number">100000</span> ) &amp;&amp; getimagesize( $uploaded_tmp ) )&#123;</span><br><span class="line">		. . .</span><br></pre></td></tr></table></figure>
+<p>主要作了以下改动：</p>
+<ol>
+<li><p>函数 <code>getimagesize()</code> 会检查文件的头部，当其不是一个正常图片文件的头部时，会返回False。若为正常图片，则返回图片的尺寸等数据。<br>这样我们需要想办法将代码嵌入到正常图片内。可用GIMP等工具进行编辑。这里用Python作一下演示：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data = open(<span class="string">'code.php'</span>,<span class="string">'rb'</span>).read()</span><br><span class="line">data += open(<span class="string">'image.png'</span>,<span class="string">'rb'</span>).read()</span><br><span class="line">open(<span class="string">'newimage.png'</span>,<span class="string">'wb'</span>).write(data)</span><br></pre></td></tr></table></figure>
+<p> 这样，生成的 newimage.png 就内嵌了 code.php 文件中的php代码。</p>
+</li>
+</ol>
+<ol>
+<li><p>函数<code>strrpos()</code>的含义为</p>
+<blockquote>
+<p><code>int strrpos ( string $haystack , string $needle [, int $offset = 0 ] )</code><br> Find the numeric position of the last occurrence of needle in the haystack string.</p>
+</blockquote>
+<p> 若上传的文件有多个后缀，则这里会检查<em>最后</em>的后缀。 而刚好 Apache 在遇到双后缀的文件时一般也是以后者为准。</p>
+</li>
+</ol>
+<p>也就是说，用 直接访问文件来执行其中的代码 这种方法已经不可行了。 接下来可以考虑结合其他漏洞，比如 File Inclusion。</p>
+<p>在前面的 <a href="https://satomhxl.github.io/2017/12/17/DVWA5-FI/">File Inclusion</a>篇中，可用high-level 下介绍的 file:// 协议，将我们前面使用Python嵌入了PHP代码的图片上传，并进行包含。<br><img src="/images/fu5.png" alt=""></p>
+<h2 id="impossible-level"><a href="#impossible-level" class="headerlink" title="impossible-level"></a>impossible-level</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( $_POST[ <span class="string">'Upload'</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Check Anti-CSRF token</span></span><br><span class="line">	checkToken( $_REQUEST[ <span class="string">'user_token'</span> ], $_SESSION[ <span class="string">'session_token'</span> ], <span class="string">'index.php'</span> );</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">// File information</span></span><br><span class="line">	$uploaded_name = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'name'</span> ];å</span><br><span class="line">	$uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, <span class="string">'.'</span> ) + <span class="number">1</span>);</span><br><span class="line">	$uploaded_size = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'size'</span> ];</span><br><span class="line">	$uploaded_type = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'type'</span> ];</span><br><span class="line">	$uploaded_tmp  = $_FILES[ <span class="string">'uploaded'</span> ][ <span class="string">'tmp_name'</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Where are we going to be writing to?</span></span><br><span class="line">	$target_path   = DVWA_WEB_PAGE_TO_ROOT . <span class="string">'hackable/uploads/'</span>;</span><br><span class="line">	<span class="comment">//$target_file   = basename( $uploaded_name, '.' . $uploaded_ext ) . '-';</span></span><br><span class="line">	$target_file   =  md5( uniqid() . $uploaded_name ) . <span class="string">'.'</span> . $uploaded_ext;</span><br><span class="line">	$temp_file     = ( ( ini_get( <span class="string">'upload_tmp_dir'</span> ) == <span class="string">''</span> ) ? ( sys_get_temp_dir() ) : ( ini_get( <span class="string">'upload_tmp_dir'</span> ) ) );</span><br><span class="line">	$temp_file    .= DIRECTORY_SEPARATOR . md5( uniqid() . $uploaded_name ) . <span class="string">'.'</span> . $uploaded_ext;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Is it an image?</span></span><br><span class="line">	<span class="keyword">if</span>( ( strtolower( $uploaded_ext ) == <span class="string">'jpg'</span> || strtolower( $uploaded_ext ) == <span class="string">'jpeg'</span> || strtolower( $uploaded_ext ) == <span class="string">'png'</span> ) &amp;&amp;</span><br><span class="line">		( $uploaded_size &lt; <span class="number">100000</span> ) &amp;&amp;</span><br><span class="line">		( $uploaded_type == <span class="string">'image/jpeg'</span> || $uploaded_type == <span class="string">'image/png'</span> ) &amp;&amp;</span><br><span class="line">		getimagesize( $uploaded_tmp ) ) &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Strip any metadata, by re-encoding image (Note, using php-Imagick is recommended over php-GD)</span></span><br><span class="line">		<span class="keyword">if</span>( $uploaded_type == <span class="string">'image/jpeg'</span> ) &#123;</span><br><span class="line">			$img = imagecreatefromjpeg( $uploaded_tmp );</span><br><span class="line">			imagejpeg( $img, $temp_file, <span class="number">100</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			$img = imagecreatefrompng( $uploaded_tmp );</span><br><span class="line">			imagepng( $img, $temp_file, <span class="number">9</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		imagedestroy( $img );</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Can we move the file to the web root from the temp folder?</span></span><br><span class="line">		<span class="keyword">if</span>( rename( $temp_file, ( getcwd() . DIRECTORY_SEPARATOR . $target_path . $target_file ) ) ) &#123;</span><br><span class="line">			<span class="comment">// Yes!</span></span><br><span class="line">			$html .= <span class="string">"&lt;pre&gt;&lt;a href='$&#123;target_path&#125;$&#123;target_file&#125;'&gt;$&#123;target_file&#125;&lt;/a&gt; succesfully uploaded!&lt;/pre&gt;"</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// No</span></span><br><span class="line">			$html .= <span class="string">'&lt;pre&gt;Your image was not uploaded.&lt;/pre&gt;'</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Delete any temp files</span></span><br><span class="line">		<span class="keyword">if</span>( file_exists( $temp_file ) )</span><br><span class="line">			unlink( $temp_file );</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Invalid file</span></span><br><span class="line">		$html .= <span class="string">'&lt;pre&gt;Your image was not uploaded. We can only accept JPEG or PNG images.&lt;/pre&gt;'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Generate Anti-CSRF token</span></span><br><span class="line">generateSessionToken();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>imagecreatefromjpeg()</code><br>  根据参数给的图片，创建一张新的图片，函数返回一个图像标识符。<br>  新的图片中没有 metadata 等额外数据，意味着上传的图片会被“消毒”。 <code>imagecreatefrompng</code>同理。</li>
+<li><code>imagejpeg()</code><br>  以一个图像标识符为参数，输出图片到浏览器或文件中。[2]表示输出的目的地。[3]表示图片质量。<code>imagepng</code>同理。</li>
+<li><code>imagedestroy()</code><br>  清除内存中与参数有关的图像标识符。</li>
+<li><code>rename()</code><br>  重命名文件。必要情况下可以移动文件至其他路径。</li>
+<li><code>unlink()</code><br>  删除文件。</li>
+</ul>
+<p>可以看到这些改变：</p>
+<ol>
+<li><code>$target_file</code>不再是上传的文件名，而是用 md5() 再加上时间戳  使服务器上的文件名难以得知。<br> 这样一来，如果没有文件读取的漏洞的话，已经很难利用该图片了(然而实验中会一直返回上传的文件名)。<br> <img src="/images/fu4.png" alt=""></li>
+<li>以上还不是最主要的防御措施。<code>imagecreatefromjpeg() -- imagejpeg() -- imagedestroy() -- rename() -- unlink()</code> 这一系列函数才真正让<em>嵌入代码到图片</em>完全失去意义。服务器创建一个不带任何杂质的图片副本，再将客户端上传的图片完全从服务器中删去。</li>
+</ol>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>针对 Apache 服务器，还有一些比较偏门的成功运行代码的方法。</p>
+<p>若你能成功上传 .htaccess 文件，则你可以</p>
+<ol>
+<li>在其中加上指令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php .jpg</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这样，上传的 .jpg 文件被访问时，服务器会将其视为 .php 文件执行。</p>
+<ol>
+<li>在其中加上指令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddHandler php7-script .php</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>(上面的php7视版本改为php5)<br>这样，只要你上传的文件中带有 .php 后缀，比如 <code>test.php.123</code> ，则服务器会将此文件作为 php 文件执行。</p>
+<blockquote>
+<p>不过以上方法当 Apache 的配置文件中 AllowOverride 选项为 None 时无法生效。</p>
+</blockquote>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ul>
+<li>服务器端识别文件类型时需要注意的几点：<ol>
+<li>如果服务器仅支持一种脚本语言，则可以考虑根据文件后缀名过滤。对于支持多种语言的服务器来说，强烈建议使用白名单过滤。</li>
+<li>检查不同服务器对应的设置，当出现双后缀名，或其他特殊分隔符时如何处理。(如file.php.jpg等)</li>
+<li>推荐使用函数 <code>basename()</code>、<code>realpath()</code> </li>
+<li>更多的，可以参考 <em>impossible-level</em></li>
+</ol>
+</li>
+<li>防止用户上传的文件被包含<br>将应被包含的文件与用户上传的文件放于不同路径下，包含前先检查路径。</li>
+</ul>
+<p>参考链接:</p>
+<ul>
+<li><a href="https://medium.com/@igordata/php-running-jpg-as-php-or-how-to-prevent-execution-of-user-uploaded-files-6ff021897389" target="_blank" rel="external">https://medium.com/@igordata/php-running-jpg-as-php-or-how-to-prevent-execution-of-user-uploaded-files-6ff021897389</a> </li>
+<li><a href="https://www.owasp.org/index.php/Unrestricted_File_Upload" target="_blank" rel="external">https://www.owasp.org/index.php/Unrestricted_File_Upload</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2018/03/10/渗透场景/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -470,7 +671,7 @@
 
       
         
-          <p>在 php 中经常会用<code>include</code>、<code>require</code>等命令包含其他源代码来提供或扩展当前文件的功能。<br>如果包含的文件非php源代码，则会输出其内容。(如果这些文件的内容中有符合语法格式的php代码，那么这些代码会被执行)</p>
+          <p>在 php 中经常会用<code>include</code>、<code>require</code>等命令包含其他源代码来提供或扩展当前文件的功能。<br>如果包含的文件非php源代码，则会输出其内容。(<strong>如果这些文件的内容中有符合语法格式的php代码，那么这些代码会被执行</strong>)</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/12/17/DVWA5-FI/#more" rel="contents">
@@ -1396,132 +1597,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://satomhxl.github.io/2017/10/18/Vim-base/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xL">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xL's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/18/Vim-base/" itemprop="url">Vim-base</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T16:15:26+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="快速移动"><a href="#快速移动" class="headerlink" title="快速移动"></a>快速移动</h2><p><code>0</code>  行首      <code>^</code>  第一个非空格字符前<br><code>$</code>  行尾<br><code>-</code>    上一行行首<br><code>+</code>   下一行行首</p>
-<p><code>nG</code>       比如100G，移动到第100行<br><code>G</code>         移动到尾行   (End也可以)<br><code>ctrl+u</code>    内容向上移动半屏<br><code>ctrl+d</code>    内容向下移动半屏</p>
-<p><code>h,j,k,l</code>分别为左移，下移，上移，右移</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/18/Vim-base/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1572,7 +1647,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1585,7 +1660,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
